@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<link rel="stylesheet" type="text/css" href="lib/jquery-ui-1.8.4.css" />
+	<link rel="stylesheet" type="text/css" href="chart/reset.css" />
+	<link rel="stylesheet" type="text/css" href="jquery.ganttView.css" />
+	<link rel="stylesheet" type="text/css" href="lib/jqplot/jquery.jqplot.css" />
+	<style type="text/css" media="screen">
+	  #chartdiv {
+	    width: 1010px;
+	    height: 400px;
+	    margin-left: 200px;
+	  }
+	  #about {
+	    font-size: 10px;
+	    font-family: verdana, arial, sans-serif;
+	    color: #333;
+	    line-height: 14px;
+	    padding: 4px 15px 10px;
+	    margin: 5px auto 20px;
+	    width: 700px;
+	    background-color: #eee;
+	    border: 1px solid #bbb;
+	    -moz-box-shadow:    -8px 5px 5px #bbb;
+	    -webkit-box-shadow: -8px 5px 5px #bbb;
+	    -moz-border-radius:    8px;
+	    -webkit-border-radius: 8px;
+	  }
+	  #about p,
+	  #about ul {
+	    margin-bottom: .5em;
+	  }
+	  .highlight {
+	    background-color: #ff0;
+	  }
+	  #about li {
+	    list-style-type: disc;
+	    margin-left: 20px;
+	  }
+	</style>
+
+	<title>GraphStarcraft</title>
+</head>
+<body>
+
+  <!-- <div id="about">
+    <p>This is what I did this weekend.  <span class="highlight">It is mostly broken</span>, but it should give a good proof of concept</p>
+    <p>Here's what, so far, _is_ cool about this:</p>
+    <ul>
+      <li>Drag and Drop tasks left / right, and update the mineral graph below</li>
+      <li>Tasks are indeed as long as they need to take</li>
+      <li>Mineral graph is quite accurate.  Build a structure and your collection rate slightly decreases (due to missing SCV).</li>
+      <li>Pulldowns of possible actions available for a building (currently don't do anything)</li>
+    </ul>
+    <p>Here's what I would like to do:</p>
+    <ul>
+      <li>This</li>
+    </ul>
+    <p>This is a work in progress.  Most of it don't work, but I wanted to share what was up anyhow to see if I could find other collaborators.</p>
+    <p>I have a sorta clear idea as to where I want to take this, but wanted to vet it with other SC players to see if it was useful &amp; or if anyone else would want to collaborate on it.  If you do want to collaborate on it, don't look at the source code, it's in a gawd-aweful prototype state.  Contact me instead.</p>
+    <p><a href="http://albert-hwang.com">WoooooooWooo0oooo!!11!  (about me)</a></p>
+    <p>Muchas Gracias (so far) to:</p>
+    <ul id="credits">
+      <li><a href="http://www.teamliquid.net/forum/viewmessage.php?topic_id=149189">SCBiff</a> and <a href="http://www.teamliquid.net/forum/viewmessage.php?topic_id=140055">Piousflea</a> for their rather great analysis of mineral collection rates</li>
+      <li><a href="http://www.thegrubbsian.com/2010/06/11/jquery-ganttview-a-lightweight-gantt-chart-for-jquery">thegrubbsian</a> for the work on jQuery.ganttView.  It is a good plugin that I took and very beligerently reuined on this site (heh, srsly, I butchered a lot of it...)</li>
+      <li><a href="http://www.jqplot.com/">jqPlot</a>, a jquery graphing tool.</li>
+      <li>&amp; of course, the folks at Blizzard... Best. Game. Ever.</li>
+    </ul>
+  </div> -->
+	<script type="text/javascript" src="lib/jquery-1.4.2.js"></script>
+	<div id="ganttChart"></div>
+	<div id="chartdiv" style=""></div>
+
+	<script type="text/javascript" src="lib/jquery-ui-1.8.4.js"></script>
+	<script type="text/javascript" src="jquery.ganttView.js"></script>
+	<script type="text/javascript" src="chart/data.js"></script>
+	<script type="text/javascript" src="lib/graphBuilder.js"></script>
+  <script type="text/javascript" src="lib/jqplot/jquery.jqplot.min.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			$("#ganttChart").ganttView({ 
+				data: ganttData,
+				start: 0,
+				end: 240,
+				slideWidth: 1000,
+        cellWidth: 4,
+        cellHeight: 40,
+				behavior: {
+				  resizable: false,
+					onDrag: function (data) { 
+        			buildGraph();
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>
