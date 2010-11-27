@@ -13,8 +13,8 @@
 </head>
 <body>
 
-  <div id="ganttChart"></div>
-  <div id="chartdiv" style=""></div>
+  <div id="ganttChartDiv"></div>
+  <div id="graphDiv" style=""></div>
 
   <script type="text/javascript" src="js/lib/jquery.js"></script>
   <script type="text/javascript" src="js/lib/jquery-ui.js"></script>
@@ -29,7 +29,7 @@
 
   <script type="text/javascript">
     $(function () {
-      $("#ganttChart").ganttView({ 
+      $("#ganttChartDiv").ganttView({ 
         data: buildOrder,
         start: 0,
         end: 240,

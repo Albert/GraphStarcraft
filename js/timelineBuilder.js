@@ -103,8 +103,8 @@ function buildGraph() {
     yTicks.push(i * 50);
   }
   
-  $("#chartdiv").html("");
-  $.jqplot('chartdiv',  [dataPoints],
+  $("#graphDiv").html("");
+  $.jqplot('graphDiv',  [dataPoints],
   {
     axes: {
       xaxis: {

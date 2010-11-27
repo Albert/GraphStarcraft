@@ -39,29 +39,3 @@ js/buildOrder
 js/ui
 js/buildOrderController
 js/timelineBuilder
-
-	<script type="text/javascript" src="js/lib/jquery-1.4.2.js"></script>
-	<script type="text/javascript" src="js/lib/jquery-ui-1.8.4.js"></script>
-	
-	<script type="text/javascript" src="js/lib/jquery-ganttView.js"></script>
-	<script type="text/javascript" src="js/data.js"></script>
-	<script type="text/javascript" src="js/graphBuilder.js"></script>
-  <script type="text/javascript" src="js/lib/jqplot/jquery.jqplot.min.js"></script>
-	<script type="text/javascript">
-		$(function () {
-			$("#ganttChart").ganttView({ 
-				data: buildOrder,
-				start: 0,
-				end: 240,
-				slideWidth: 3000,
-        cellWidth: 4,
-        cellHeight: 40,
-				behavior: {
-				  resizable: false,
-					onDrag: function (data) { 
-        			buildGraph();
-					}
-				}
-			});
-		});
-	</script>
