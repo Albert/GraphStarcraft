@@ -14,7 +14,7 @@
 <body>
 
   <div id="ganttChartDiv"></div>
-  <div id="graphDiv" style=""></div>
+  <div id="graphDiv"></div>
 
   <script type="text/javascript" src="js/lib/jquery.js"></script>
   <script type="text/javascript" src="js/lib/jquery-ui.js"></script>
@@ -27,23 +27,10 @@
   <script type="text/javascript" src="js/buildOrderController.js"></script>
   <script type="text/javascript" src="js/timelineBuilder.js"></script>
 
-  <script type="text/javascript">
-    $(function () {
-      $("#ganttChartDiv").ganttView({ 
-        data: buildOrder,
-        start: 0,
-        end: 240,
-        slideWidth: 3000,
-        cellWidth: 4,
-        cellHeight: 40,
-        behavior: {
-          resizable: false,
-          onDrag: function (data) { 
-              buildGraph();
-          }
-        }
-      });
-    });
+  <script type="text/javascript" src="js/application.js"></script>
+
+  <script type="text/javascript" charset="utf-8">
+    drawPage(buildOrder);
   </script>
 </body>
 </html>
