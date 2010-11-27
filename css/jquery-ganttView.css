@@ -88,6 +88,10 @@ div.ganttview-slide-container {
 
 /* Grid */
 
+div.ganttview-grid {
+  clear: left;  
+}
+
 div.ganttview-grid-row-cell {
 	width: 20px;
 	height: 31px;

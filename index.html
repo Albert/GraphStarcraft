@@ -3,43 +3,11 @@
 
 <html lang="en">
 <head>
+	<link rel="stylesheet" type="text/css" href="css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.4.css" />
-	<link rel="stylesheet" type="text/css" href="css/chart/reset.css" />
 	<link rel="stylesheet" type="text/css" href="css/jquery-ganttView.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery.jqplot.css" />
-	<style type="text/css" media="screen">
-	  #chartdiv {
-	    width: 1010px;
-	    height: 400px;
-	    margin-left: 200px;
-	  }
-	  #about {
-	    font-size: 10px;
-	    font-family: verdana, arial, sans-serif;
-	    color: #333;
-	    line-height: 14px;
-	    padding: 4px 15px 10px;
-	    margin: 5px auto 20px;
-	    width: 700px;
-	    background-color: #eee;
-	    border: 1px solid #bbb;
-	    -moz-box-shadow:    -8px 5px 5px #bbb;
-	    -webkit-box-shadow: -8px 5px 5px #bbb;
-	    -moz-border-radius:    8px;
-	    -webkit-border-radius: 8px;
-	  }
-	  #about p,
-	  #about ul {
-	    margin-bottom: .5em;
-	  }
-	  .highlight {
-	    background-color: #ff0;
-	  }
-	  #about li {
-	    list-style-type: disc;
-	    margin-left: 20px;
-	  }
-	</style>
+	<link rel="stylesheet" type="text/css" href="css/jquery-jqplot.css" />
+	<link rel="stylesheet" type="text/css" href="css/graph-starcraft.css" />
 
 	<title>GraphStarcraft</title>
 </head>
@@ -50,9 +18,9 @@
 	<div id="chartdiv" style=""></div>
 
 	<script type="text/javascript" src="js/lib/jquery-ui-1.8.4.js"></script>
-	<script type="text/javascript" src="js/jquery.ganttView.js"></script>
+	<script type="text/javascript" src="js/lib/jquery.ganttView.js"></script>
 	<script type="text/javascript" src="js/data.js"></script>
-	<script type="text/javascript" src="js/lib/graphBuilder.js"></script>
+	<script type="text/javascript" src="js/graphBuilder.js"></script>
   <script type="text/javascript" src="js/lib/jqplot/jquery.jqplot.min.js"></script>
 	<script type="text/javascript">
 		$(function () {
@@ -60,7 +28,7 @@
 				data: ganttData,
 				start: 0,
 				end: 240,
-				slideWidth: 1000,
+				slideWidth: 3000,
         cellWidth: 4,
         cellHeight: 40,
 				behavior: {

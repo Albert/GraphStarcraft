@@ -43,14 +43,6 @@ function buildGraph() {
       latestEvent = blockEnd;
     }
   });
-  
-  //unorderedEventHistory = workerCompletions.concat(purchaseHistory);
-  //eventHistory          = unorderedEventHistory.sort(function(a,b){return a[0] - b[0]})
-
-  // console.log(workerCompletions);     //  timestamps
-  // console.log(purchaseHistory);       //  [time, cost]
-  // console.log(latestEvent);        //  last event
-  // console.log(eventHistory);          //  ordered history of events
 
   var minCount = 50;                  //  you start off w/ 50 min
   var workerCount = 6;                //  ... and 6 workers
