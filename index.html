@@ -3,42 +3,47 @@
 
 <html lang="en">
 <head>
-	<link rel="stylesheet" type="text/css" href="css/reset.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.4.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery-ganttView.css" />
-	<link rel="stylesheet" type="text/css" href="css/jquery-jqplot.css" />
-	<link rel="stylesheet" type="text/css" href="css/graph-starcraft.css" />
+  <link rel="stylesheet" type="text/css" href="css/reset.css" />
+  <link rel="stylesheet" type="text/css" href="css/jquery-ui-1.8.4.css" />
+  <link rel="stylesheet" type="text/css" href="css/jquery-ganttView.css" />
+  <link rel="stylesheet" type="text/css" href="css/jquery-jqplot.css" />
+  <link rel="stylesheet" type="text/css" href="css/graph-starcraft.css" />
 
-	<title>GraphStarcraft</title>
+  <title>GraphStarcraft</title>
 </head>
 <body>
 
-	<script type="text/javascript" src="js/lib/jquery-1.4.2.js"></script>
-	<div id="ganttChart"></div>
-	<div id="chartdiv" style=""></div>
+  <div id="ganttChart"></div>
+  <div id="chartdiv" style=""></div>
 
-	<script type="text/javascript" src="js/lib/jquery-ui-1.8.4.js"></script>
-	<script type="text/javascript" src="js/lib/jquery.ganttView.js"></script>
-	<script type="text/javascript" src="js/data.js"></script>
-	<script type="text/javascript" src="js/graphBuilder.js"></script>
-  <script type="text/javascript" src="js/lib/jqplot/jquery.jqplot.min.js"></script>
-	<script type="text/javascript">
-		$(function () {
-			$("#ganttChart").ganttView({ 
-				data: ganttData,
-				start: 0,
-				end: 240,
-				slideWidth: 3000,
+  <script type="text/javascript" src="js/lib/jquery.js"></script>
+  <script type="text/javascript" src="js/lib/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/lib/jquery-ganttView.js"></script>
+  <script type="text/javascript" src="js/lib/jquery-jqplot.js"></script>
+
+  <script type="text/javascript" src="js/buildOrder.js"></script>
+
+  <script type="text/javascript" src="js/ui.js"></script>
+  <script type="text/javascript" src="js/buildOrderController.js"></script>
+  <script type="text/javascript" src="js/timelineBuilder.js"></script>
+
+  <script type="text/javascript">
+    $(function () {
+      $("#ganttChart").ganttView({ 
+        data: buildOrder,
+        start: 0,
+        end: 240,
+        slideWidth: 3000,
         cellWidth: 4,
         cellHeight: 40,
-				behavior: {
-				  resizable: false,
-					onDrag: function (data) { 
-        			buildGraph();
-					}
-				}
-			});
-		});
-	</script>
+        behavior: {
+          resizable: false,
+          onDrag: function (data) { 
+              buildGraph();
+          }
+        }
+      });
+    });
+  </script>
 </body>
 </html>

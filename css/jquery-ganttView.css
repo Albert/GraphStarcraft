@@ -132,6 +132,7 @@ div.ganttview-block {
 }
 
 div.ganttview-block-text,
+div.ganttview-block-close,
 div.ganttview-block-start,
 div.ganttview-block-end {
 	position: absolute;
@@ -141,8 +142,10 @@ div.ganttview-block-end {
 	padding: 2px 3px;
 }
 
-div.ganttview-block-start { left: 0; bottom: 0;   font-size: .6em}
-div.ganttview-block-end   { right: 0; bottom: 0;  font-size: .6em}
+div.ganttview-block-close { right: 0; top: 0;  font-size: .6em }
+div.ganttview-block-close:hover { text-decoration: underline; cursor: pointer; }
+div.ganttview-block-start { left: 0; bottom: 0;   font-size: .6em }
+div.ganttview-block-end   { right: 0; bottom: 0;  font-size: .6em }
 
 /* Adjustments for jQuery UI Styling */
 

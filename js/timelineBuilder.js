@@ -121,4 +121,5 @@ function buildGraph() {
     }]
   }
 );
+debugVar = eventHistory;
 }

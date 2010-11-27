@@ -1,0 +1,67 @@
+ui components (clickable things, selects, options, etc...)
+buildOrder (json struct)
+timeline (time sigs & various resource counts)
+
+UI.js
+  onChange, onClick, onWhatever
+
+buildOrder.js
+  addItem()
+  removeItem()
+  moveItem()
+
+jquery-ganttView.js
+  contructor
+
+timelineBuilder.js
+  buildTimeline();
+
+jqplot.js
+  build graph
+
+User interacts with a UI feature
+  Calls on buildOrderController to modify buildOrder
+    Modified buildOrder used to render a new GanttView
+    Modified buildOrder used to build timeline, resource counters, and render graph
+
+buildOrderController.js
+  A series of functions that parse thru and modify buildOrder
+
+
+
+js/lib/jquery
+js/lib/jquery-ui
+js/lib/jqplot
+js/lib/jquery-ganttview
+
+js/buildOrder
+
+js/ui
+js/buildOrderController
+js/timelineBuilder
+
+	<script type="text/javascript" src="js/lib/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="js/lib/jquery-ui-1.8.4.js"></script>
+	
+	<script type="text/javascript" src="js/lib/jquery-ganttView.js"></script>
+	<script type="text/javascript" src="js/data.js"></script>
+	<script type="text/javascript" src="js/graphBuilder.js"></script>
+  <script type="text/javascript" src="js/lib/jqplot/jquery.jqplot.min.js"></script>
+	<script type="text/javascript">
+		$(function () {
+			$("#ganttChart").ganttView({ 
+				data: buildOrder,
+				start: 0,
+				end: 240,
+				slideWidth: 3000,
+        cellWidth: 4,
+        cellHeight: 40,
+				behavior: {
+				  resizable: false,
+					onDrag: function (data) { 
+        			buildGraph();
+					}
+				}
+			});
+		});
+	</script>

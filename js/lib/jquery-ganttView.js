@@ -207,6 +207,7 @@ behavior: {
 
                         block.append(jQuery("<div>", { "class": "ganttview-block-start" }).text(return_times[0]));
                         block.append(jQuery("<div>", { "class": "ganttview-block-end" }).text(return_times[1]));
+                        block.append(jQuery("<div>", { "class": "ganttview-block-close" }).text("x"));
                         jQuery(rows[rowIdx]).append(block);
                     }
                 }
@@ -223,9 +224,9 @@ behavior: {
         },
 
         applyLastClass: function (div) {
-            jQuery("div.ganttview-grid-row div.ganttview-grid-row-cell:last-child", div).addClass("last");
-            jQuery("div.ganttview-hzheader-seconds div.ganttview-hzheader-second:last-child", div).addClass("last");
-            jQuery("div.ganttview-hzheader-minutes div.ganttview-hzheader-minute:last-child", div).addClass("last");
+          jQuery("div.ganttview-grid-row div.ganttview-grid-row-cell:last-child", div).addClass("last");
+          jQuery("div.ganttview-hzheader-seconds div.ganttview-hzheader-second:last-child", div).addClass("last");
+          jQuery("div.ganttview-hzheader-minutes div.ganttview-hzheader-minute:last-child", div).addClass("last");
         }
 
     };

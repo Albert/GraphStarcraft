@@ -1,4 +1,4 @@
-var ganttData = [
+var buildOrder = [
 	{
 		id: 1, itemName: "CC", series: [
 			{ seriesName: "SCV", start: 0, duration: 17, minCost: 50 },
