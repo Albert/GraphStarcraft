@@ -1,6 +1,6 @@
 var buildOrder = [
   {
-    id: 1, itemName: "CC", series: [
+    itemName: "CC", series: [
       { seriesName: "SCV", start: 0, duration: 17, minCost: 50 },
       { seriesName: "SCV", start: 17, duration: 17, minCost: 50 },
       { seriesName: "SCV", start: 34, duration: 17, minCost: 50 },
@@ -21,7 +21,7 @@ var buildOrder = [
     ]
   },
   {
-    id: 2, itemName: "Supply Depot", series: [
+    itemName: "Supply Depot", series: [
       { seriesName: "Construction", start: 55, duration: 30, minCost: 100 },
       { seriesName: "Construction", start: 170, duration: 30, minCost: 100 }
     ], selectOptions: [
@@ -29,7 +29,7 @@ var buildOrder = [
     ]
   }, 
   {
-    id: 3, itemName: "Barracks", series: [
+    itemName: "Barracks", series: [
       { seriesName: "Construction", start: 94, duration: 60, minCost: 150 },
       { seriesName: "Marine", start: 154, duration: 25, minCost: 50},
       { seriesName: "Marine", start: 179, duration: 25, minCost: 50},
@@ -43,14 +43,14 @@ var buildOrder = [
     ]
   }, 
   {
-    id: 4, itemName: "Refinery", series: [
+    itemName: "Refinery", series: [
       { seriesName: "Construction", start: 117, duration: 30, minCost: 75 }
     ], selectOptions: [
       { name: "Build", duration: 30, minCost: 75 }
     ]
   },
   {
-    id: 5, itemName: "Factory", series: [
+    itemName: "Factory", series: [
       { seriesName: "Construction", start: 204, duration: 60, minCost: 150, gasCost: 100}
     ], selectOptions: [
       { name: "Build", duration: 60, minCost: 150, gasCost: 100 },
