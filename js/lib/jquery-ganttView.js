@@ -23,8 +23,8 @@ behavior: {
 }
 */
 
-(function (jQuery) {
-    jQuery.fn.ganttView = function (options) {
+(function ($) {
+    $.fn.ganttView = function (options) {
 
         var els = this;
         var defaults = {
@@ -42,18 +42,17 @@ behavior: {
             }
         };
         
-        // Insure that we have dates and not strings otherwise date.js can't operate
-        var opts = jQuery.extend(true, defaults, options);
+        var opts = $.extend(true, defaults, options);
         var minutes = Chart.getMinutes(opts.start, opts.end);
 
         els.each(function () {
 
-            var container = jQuery(this);
-            var div = jQuery("<div>", { "class": "ganttview" });
+            var container = $(this);
+            var div = $("<div>", { "class": "ganttview" });
 
             Chart.addVtHeader(div, opts.data, opts.cellHeight);
 
-            var slideDiv = jQuery("<div>", {
+            var slideDiv = $("<div>", {
                 "class": "ganttview-slide-container",
                 "css": { "width": opts.slideWidth + "px" }
             });
@@ -66,8 +65,8 @@ behavior: {
             div.append(slideDiv);
             container.append(div);
 
-            var w = jQuery("div.ganttview-vtheader", container).outerWidth() +
-				jQuery("div.ganttview-slide-container", container).outerWidth();
+            var w = $("div.ganttview-vtheader", container).outerWidth() +
+				$("div.ganttview-slide-container", container).outerWidth();
             container.css("width", (w + 2) + "px");
 
             Chart.applyLastClass(container);
@@ -100,42 +99,42 @@ behavior: {
         },
 
         addVtHeader: function (div, data, cellHeight) {
-            var headerDiv = jQuery("<div>", { "class": "ganttview-vtheader" });
+            var headerDiv = $("<div>", { "class": "ganttview-vtheader" });
             for (var i = 0; i < data.length; i++) {
-                var itemDiv = jQuery("<div>", { "class": "ganttview-vtheader-item", "css": { "height": (cellHeight+1) + "px" }});
+                var itemDiv = $("<div>", { "class": "ganttview-vtheader-item", "css": { "height": (cellHeight+1) + "px" }});
                 var selector;
                 if (data[i].selectOptions != undefined) {
-                  selector = jQuery("<select>");
+                  selector = $("<select>");
                   for (var j = 0; j < data[i].selectOptions.length; j++) {
                     option = data[i].selectOptions[j];
-                    dom_option = jQuery("<option>", { "value": option.name }).html(option.name);
+                    dom_option = $("<option>", { "value": option.name }).html(option.name);
                     selector.append(dom_option);
                   }
                 } else {
                   selector = "";
                 }
-                itemDiv.append(jQuery("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].itemName)).append(selector);
+                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].itemName)).append(selector);
                 headerDiv.append(itemDiv);
             }
             div.append(headerDiv);
         },
 
         addHzHeader: function (div, minutes, cellWidth) {
-            var headerDiv = jQuery("<div>", { "class": "ganttview-hzheader" });
-            var minutesDiv = jQuery("<div>", { "class": "ganttview-hzheader-minutes" });
-            var secondsDiv = jQuery("<div>", { "class": "ganttview-hzheader-seconds" });
+            var headerDiv = $("<div>", { "class": "ganttview-hzheader" });
+            var minutesDiv = $("<div>", { "class": "ganttview-hzheader-minutes" });
+            var secondsDiv = $("<div>", { "class": "ganttview-hzheader-seconds" });
             var chunkWidth = cellWidth * 10;
             var totalW = 0;
             for (var i = 0; i < 12; i++) {
                 if (minutes[i] != undefined) {
                     var w = 60* cellWidth;
                     totalW = totalW + w;
-                    minutesDiv.append(jQuery("<div>", {
+                    minutesDiv.append($("<div>", {
                         "class": "ganttview-hzheader-minute",
                         "css": { "width": (w - 1) + "px" }
                     }).append(minutes[i]));
                     for (var j = 0; j < (60); j = j + 10) {
-                        secondsDiv.append(jQuery("<div>", { "class": "ganttview-hzheader-second", "width" : (chunkWidth - 1) })
+                        secondsDiv.append($("<div>", { "class": "ganttview-hzheader-second", "width" : (chunkWidth - 1) })
 							.append(j));
                     }
                 }
@@ -147,12 +146,12 @@ behavior: {
         },
 
         addGrid: function (div, data, minutes, cellWidth, cellHeight) {
-            var gridDiv = jQuery("<div>", { "class": "ganttview-grid" });
-            var rowDiv = jQuery("<div>", { "class": "ganttview-grid-row" });
+            var gridDiv = $("<div>", { "class": "ganttview-grid" });
+            var rowDiv = $("<div>", { "class": "ganttview-grid-row" });
             for (var i = 0; i < 12; i++) {
                 if (minutes[i] != undefined) {
                     for (var j = 0; j < 60; j++) {
-                        var cellDiv = jQuery("<div>", { "class": "ganttview-grid-row-cell ", "width" : (cellWidth - 1), "height": cellHeight });
+                        var cellDiv = $("<div>", { "class": "ganttview-grid-row-cell ", "width" : (cellWidth - 1), "height": cellHeight });
                         if (j % 10 == 9) {
                           cellDiv.addClass("darker");
                         }
@@ -160,7 +159,7 @@ behavior: {
                     }
                 }
             }
-            var w = jQuery("div.ganttview-grid-row-cell", rowDiv).length * cellWidth;
+            var w = $("div.ganttview-grid-row-cell", rowDiv).length * cellWidth;
             rowDiv.css("width", w + "px");
             gridDiv.css("width", w + "px");
             for (var i = 0; i < data.length; i++) {
@@ -170,15 +169,15 @@ behavior: {
         },
 
         addBlockContainers: function (div, data, cellHeight) {
-            var blocksDiv = jQuery("<div>", { "class": "ganttview-blocks" });
+            var blocksDiv = $("<div>", { "class": "ganttview-blocks" });
             for (var i = 0; i < data.length; i++) {
-                    blocksDiv.append(jQuery("<div>", { "class": "ganttview-block-container", "height": cellHeight - 3}));
+                    blocksDiv.append($("<div>", { "class": "ganttview-block-container", "height": cellHeight - 3}));
             }
             div.append(blocksDiv);
         },
 
         addBlocks: function (div, data, cellWidth, cellHeight, start) {
-            var rows = jQuery("div.ganttview-blocks div.ganttview-block-container", div);
+            var rows = $("div.ganttview-blocks div.ganttview-block-container", div);
             var rowIdx = 0;
             for (var i = 0; i < data.length; i++) { /* for each structure */
                 for (var j = 0; j < data[i].series.length; j++) { /* for each production type (labs for rax) */
@@ -188,7 +187,7 @@ behavior: {
                     if (size && size > 0) {
                         if (size > 365) { size = 365; } // Keep blocks from overflowing a year
                         var offset = series.start;
-                        var block = jQuery("<div>", {
+                        var block = $("<div>", {
                             "class": "ganttview-block series_" + series.seriesName,
                             "title": series.seriesName + ", " + size + " seconds",
                             "css": {
@@ -201,14 +200,14 @@ behavior: {
                         if (data[i].series[j].color) {
                             block.css("background-color", data[i].series[j].color);
                         }
-                        block.append(jQuery("<div>", { "class": "ganttview-block-text" }).text(series.seriesName));
+                        block.append($("<div>", { "class": "ganttview-block-text" }).text(series.seriesName));
                         
                         return_times = getFriendlyTimes(series.start, series.start + series.duration);
 
-                        block.append(jQuery("<div>", { "class": "ganttview-block-start" }).text(return_times[0]));
-                        block.append(jQuery("<div>", { "class": "ganttview-block-end" }).text(return_times[1]));
-                        block.append(jQuery("<div>", { "class": "ganttview-block-close" }).text("x"));
-                        jQuery(rows[rowIdx]).append(block);
+                        block.append($("<div>", { "class": "ganttview-block-start" }).text(return_times[0]));
+                        block.append($("<div>", { "class": "ganttview-block-end" }).text(return_times[1]));
+                        block.append($("<div>", { "class": "ganttview-block-close" }).text("x"));
+                        $(rows[rowIdx]).append(block);
                     }
                 }
                     rowIdx = rowIdx + 1;
@@ -219,14 +218,14 @@ behavior: {
         	// This allows custom attributes to be added to the series data objects
         	// and makes them available to the 'data' argument of click, resize, and drag handlers
         	var blockData = { id: data.id, itemName: data.itemName };
-        	jQuery.extend(blockData, series);
+        	$.extend(blockData, series);
         	block.data("block-data", blockData);
         },
 
         applyLastClass: function (div) {
-          jQuery("div.ganttview-grid-row div.ganttview-grid-row-cell:last-child", div).addClass("last");
-          jQuery("div.ganttview-hzheader-seconds div.ganttview-hzheader-second:last-child", div).addClass("last");
-          jQuery("div.ganttview-hzheader-minutes div.ganttview-hzheader-minute:last-child", div).addClass("last");
+          $("div.ganttview-grid-row div.ganttview-grid-row-cell:last-child", div).addClass("last");
+          $("div.ganttview-hzheader-seconds div.ganttview-hzheader-second:last-child", div).addClass("last");
+          $("div.ganttview-hzheader-minutes div.ganttview-hzheader-minute:last-child", div).addClass("last");
         }
 
     };
@@ -234,17 +233,17 @@ behavior: {
     var Behavior = {
   	
       bindBlockClick: function (div, callback) {
-          jQuery("div.ganttview-block", div).live("click", function () {
-              if (callback) { callback(jQuery(this).data("block-data")); }
+          $("div.ganttview-block", div).live("click", function () {
+              if (callback) { callback($(this).data("block-data")); }
           });
       },
       
       bindBlockResize: function (div, cellWidth, startDate, callback) {
-      	jQuery("div.ganttview-block", div).resizable({
+      	$("div.ganttview-block", div).resizable({
       		grid: cellWidth, 
       		handles: "e,w",
       		stop: function () {
-      			var block = jQuery(this);
+      			var block = $(this);
       			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
       			if (callback) { callback(block.data("block-data")); }
       		}
@@ -252,11 +251,11 @@ behavior: {
       },
       
       bindBlockDrag: function (div, cellWidth, startDate, callback) {
-      	jQuery("div.ganttview-block", div).draggable({
+      	$("div.ganttview-block", div).draggable({
       		axis: "x", 
       		grid: [cellWidth, cellWidth],
       		stop: function () {
-      			var block = jQuery(this);
+      			var block = $(this);
       			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
       			if (callback) { callback(block.data("block-data"));
       			  buildGraph();
@@ -266,7 +265,7 @@ behavior: {
       },
       
       updateDataAndPosition: function (div, block, cellWidth, startDate) {
-      	var container = jQuery("div.ganttview-slide-container", div);
+      	var container = $("div.ganttview-slide-container", div);
       	var scroll = container.scrollLeft();
 	    	var offset = block.offset().left - container.offset().left - 1 + scroll;
 

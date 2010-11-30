@@ -1,3 +1,72 @@
+eDesc = {       // BuildingTypes, events
+  "cc": {
+    "cc": ["building", 400, 0, 0],
+    "scv": ["worker", 50, 0, 1],
+    "orbital": ["addon", 150, 0, 0],
+    "planetary": ["addon", 150, 0, 0]
+  },
+  "depot": {
+    "depot": ["building", 100, 0, 0]
+  },
+  "barracks": {
+    "barracks": ["building", 150, 0, 0],
+    "marine": ["unit", 50, 0, 1],
+    "maurader": ["unit", 100, 50, 2],
+    "reaper": ["unit", 50, 0, 1],
+    "reactor": ["unit", 50, 0, 1],
+    "tech": ["unit", 50, 0, 1]
+  }
+};
+
+
+
+bOrder = [         // Gantt Row #, Building Type, events:
+  {
+    "name": "cc",
+    "events": {
+      0: "scv",
+      17: "scv",
+      34: "scv"
+    }
+  },
+  {
+    "name": "depot",
+    "events": {
+      38: "depot"
+    }
+  },
+  {
+    "name": "barracks",
+    "events": {
+      38: "barracks",
+      69: "marine"
+    }
+  }  
+]
+
+eDesc[ bo[0].name ][ bo[0].events[0] ]
+returns something like: ["worker", 50, 0, 1]
+
+
+Timeline:
+Time sig, buildingID, event
+[
+  [1, 1, "scv"],
+  [50, 2, "depot"]
+]
+
+Resources:
+mineral, gas, food, cap
+[
+  [50, 0, 6, 11] // <-- understood to be the the first second in time
+  [0, 0, 7, 11]  // <-- second 2
+  [5, 0, 7, 11]  // <-- second 3
+]
+
+
+
+
+
 ui components (clickable things, selects, options, etc...)
 buildOrder (json struct)
 timeline (time sigs & various resource counts)
@@ -29,6 +98,48 @@ buildOrderController.js
 
 
 
+Data Structures:
+
+1 - Event Index
+[
+  {name: "barracks_construction", eventType: "buildingConstruction", duration: 50, minerals: 150},
+  {name: "barracks_marine",       eventType: "unitConstruction",     duration: 50, minerals: 50},
+  {name: "cc_scv",                eventType: "workerConstruction",   duration, 17, minerals: 50}
+]
+
+1 - Build Actions Index
+[
+  {name: "cc", options: ["construction", "scv", "orbital command", "planetary fortress"]}
+  {name: "barracks", options: ["construction", "marine", "maurader", "reaper", "ghost", "tech lab", "reactor"]}
+  [name: "barracks_tech", options: ["combat shields", "stim", "concussive shells", "reaper speed"]]
+  [name: "barracks_reactor", options: ["marine"]]
+]
+
+3 - Build Order
+[
+  {
+    building: "Supply Depots",
+    production: [
+      { event: "Construction", start: 55  },
+      { event: "Construction", start: 170 }
+    ]
+  },
+  {
+    building: "Barracks",
+    production: [
+      { event: "Construction", start: 140  },
+      { event: "Marine", start: 150 }
+    ]
+  },
+]
+
+4 - jqplot data
+
+minerals  = [[0, 50], [17, 30], [34, 50]];
+gas       = [[0, 0], [150, 28], [151, 3]];
+supply    = [[0, 6], [17, 7], [34, 8]];
+supplyCap = [[0, 11], [70, 11], [71, 19]];
+
 js/lib/jquery
 js/lib/jquery-ui
 js/lib/jqplot
@@ -39,3 +150,7 @@ js/buildOrder
 js/ui
 js/buildOrderController
 js/timelineBuilder
+
+
+
+**make supply depots transparent

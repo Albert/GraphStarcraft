@@ -1,17 +1,14 @@
-var flattenedTimeline = [];
+var resourceEvents = []; // this is a list of anytime a resource-related event fires
+var eventHistory = [];
 
-function drawGraph(dataset) {
-
+function buildEventHistory() {
   var workerConstructions = $(".series_SCV");
   var workerCompletions = [];
-  var eventHistory = {
-    "events": []
-  }
 
   for (var i = 0; i < workerConstructions.size(); i++) {
     var blockEnd = $.data(workerConstructions[i], "block-data").start;
     var myEvent = {"time": blockEnd, "eventType": "newWorker"};
-    eventHistory.events.push(myEvent);
+    eventHistory.push(myEvent);
   }
 
   var purchaseHistory = [];
@@ -22,6 +19,7 @@ function drawGraph(dataset) {
       flattenedTimeline.push(buildOrder[i].series[s]);
     }
   }
+
 
   $(".ganttview-block").each(function(i) {
     purchase = $(this);
@@ -44,8 +42,8 @@ function drawGraph(dataset) {
     var buildEvent   = {"time": blockStart, "eventType": purchaseType + "Begins", "minCost": blockMinCost};
     var finishEvent  = {"time": blockEnd, "eventType": purchaseType + "Ends" };
 
-    eventHistory.events.push(buildEvent);
-    eventHistory.events.push(finishEvent);
+    eventHistory.push(buildEvent);
+    eventHistory.push(finishEvent);
 
     if (latestEvent < blockEnd) {
       latestEvent = blockEnd;
@@ -60,9 +58,9 @@ function drawGraph(dataset) {
   var maxMinCount = 0;
 
   for (var i = 0; i < latestEvent; i++) {
-    for (var j = 0; j < eventHistory.events.length; j ++) {
-      if (eventHistory.events[j].time == i) {
-        currentEvent = eventHistory.events[j];
+    for (var j = 0; j < eventHistory.length; j ++) {
+      if (eventHistory[j].time == i) {
+        currentEvent = eventHistory[j];
         if (currentEvent.eventType == "newWorkerBegins") {
           minCount = minCount - currentEvent.minCost;
         }
@@ -129,5 +127,4 @@ function drawGraph(dataset) {
     }]
   }
 );
-debugVar = eventHistory;
 }

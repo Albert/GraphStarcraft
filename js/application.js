@@ -15,5 +15,4 @@ function drawPage(dataSet) {
       }
     });
   });
-  drawGraph(dataSet);
 }

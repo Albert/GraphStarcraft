@@ -2,14 +2,12 @@ var debugVar;
 function buildGraph() {
   var workerConstructions = $(".series_SCV");
   var workerCompletions = [];
-  var eventHistory = {
-    "events": []
-  }
+  var eventHistory = [];
 
   for (var i = 0; i < workerConstructions.size(); i++) {
     var blockEnd = $.data(workerConstructions[i], "block-data").start;
     var myEvent = {"time": blockEnd, "eventType": "newWorker"};
-    eventHistory.events.push(myEvent);
+    eventHistory.push(myEvent);
   }
 
   var purchaseHistory = [];
@@ -36,8 +34,8 @@ function buildGraph() {
     var buildEvent   = {"time": blockStart, "eventType": purchaseType + "Begins", "minCost": blockMinCost};
     var finishEvent  = {"time": blockEnd, "eventType": purchaseType + "Ends" };
 
-    eventHistory.events.push(buildEvent);
-    eventHistory.events.push(finishEvent);
+    eventHistory.push(buildEvent);
+    eventHistory.push(finishEvent);
 
     if (latestEvent < blockEnd) {
       latestEvent = blockEnd;
@@ -52,9 +50,9 @@ function buildGraph() {
   var maxMinCount = 0;
 
   for (var i = 0; i < latestEvent; i++) {
-    for (var j = 0; j < eventHistory.events.length; j ++) {
-      if (eventHistory.events[j].time == i) {
-        currentEvent = eventHistory.events[j];
+    for (var j = 0; j < eventHistory.length; j ++) {
+      if (eventHistory[j].time == i) {
+        currentEvent = eventHistory[j];
         if (currentEvent.eventType == "newWorkerBegins") {
           minCount = minCount - currentEvent.minCost;
         }

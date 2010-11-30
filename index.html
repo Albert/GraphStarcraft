@@ -30,7 +30,113 @@
   <script type="text/javascript" src="js/application.js"></script>
 
   <script type="text/javascript" charset="utf-8">
-    drawPage(buildOrder);
-  </script>
+tDesc = {       // BuildingTypes, tasks
+  cc: {
+    construction: ["building", 400, 0, 0],
+    scv: ["worker", 50, 0, 1],
+    orbital: ["addon", 150, 0, 0],
+    planetary: ["addon", 150, 0, 0]
+  },
+  depot: {
+    construction: ["building", 100, 0, 0]
+  },
+  barracks: {
+    construction: ["building", 150, 0, 0],
+    marine: ["unit", 50, 0, 1],
+    maurader: ["unit", 100, 50, 2],
+    reaper: ["unit", 50, 0, 1],
+    reactor: ["addon", 50, 0, 1],
+    tech: ["addon", 50, 0, 1]
+  },
+  factory: {
+    construction: ["building", 150, 0, 0],
+    hellion: ["building", 150, 0, 0],
+    tank: ["unit", 50, 0, 1],
+    thor: ["unit", 100, 50, 2],
+    reactor: ["addon", 50, 0, 1],
+    tech: ["addon", 50, 0, 1]
+  },
+  tech: {
+    sheilds: ["tech", 150, 0, 0],
+    stim: ["tech", 150, 0, 0],
+    shells: ["tech", 50, 0, 1],
+    reaver_speed: ["tech", 100, 50, 2],
+    blue_flame: ["tech", 50, 0, 1],
+    seige: ["tech", 50, 0, 1],
+    maybe_extra_energy: ["tech", 50, 0, 1],
+    maybe_extra_energy2: ["tech", 50, 0, 1]
+  },
+  reactor: {
+    marine: ["unit", 150, 0, 0],
+    hellion: ["unit", 50, 0, 1],
+    viking: ["unit", 100, 50, 2]
+  },
+  engineering: {
+    construction: ["building", 150, 0, 0],
+    weapons1: ["tech", 150, 0, 0],
+    armor1: ["tech", 150, 0, 0]
+  }
+};
+
+bOrder = [         // Gantt Row #, Building Type, events:
+  {
+    name: "cc",
+    tasks: {
+      0: "scv",
+      17: "scv",
+      34: "scv"
+    }
+  },
+  {
+    name: "depot",
+    tasks: {
+      38: "construction"
+    }
+  },
+  {
+    name: "barracks",
+    tasks: {
+      38: "construction",
+      69: "marine"
+    }
+  }  
+]
+
+for (var building in bOrder) {
+  for (var task in bOrder[building].tasks) {
+    console.log(task + ", " + tDesc[ bOrder[building].name ][ bOrder[building].tasks[task] ])
+  }
+}
+
+
+
+
+
+
+var ganttable = [
+  {
+    itemName: "CC", series: [
+      { seriesName: "SCV", start: 0, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 17, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 34, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 51, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 68, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 85, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 102, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 119, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 136, duration: 17, minCost: 50 },
+      { seriesName: "Orbital Command", start: 153, duration: 35, minCost: 150 },
+      { seriesName: "SCV", start: 188, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 205, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 222, duration: 17, minCost: 50 },
+      { seriesName: "SCV", start: 239, duration: 17, minCost: 50 }
+    ]
+  }
+];
+
+drawPage(ganttable);
+
+
+</script>
 </body>
 </html>
