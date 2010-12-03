@@ -32,49 +32,49 @@
   <script type="text/javascript" charset="utf-8">
 tDesc = {       // BuildingTypes, tasks
   cc: {
-    construction: ["building", 400, 0, 0],
-    scv: ["worker", 50, 0, 1],
-    orbital: ["addon", 150, 0, 0],
-    planetary: ["addon", 150, 0, 0]
+    construction: ["building", 60, 400, 0, 0],
+    scv: ["worker", 17, 50, 0, 1],
+    orbital: ["addon", 60, 150, 0, 0],
+    planetary: ["addon", 60, 150, 0, 0]
   },
   depot: {
-    construction: ["building", 100, 0, 0]
+    construction: ["building", 60, 100, 0, 0]
   },
   barracks: {
-    construction: ["building", 150, 0, 0],
-    marine: ["unit", 50, 0, 1],
-    maurader: ["unit", 100, 50, 2],
-    reaper: ["unit", 50, 0, 1],
-    reactor: ["addon", 50, 0, 1],
-    tech: ["addon", 50, 0, 1]
+    construction: ["building", 60, 150, 0, 0],
+    marine: ["unit", 60, 50, 0, 1],
+    maurader: ["unit", 60, 100, 50, 2],
+    reaper: ["unit", 60, 50, 0, 1],
+    reactor: ["addon", 60, 50, 0, 1],
+    tech: ["addon", 60, 50, 0, 1]
   },
   factory: {
-    construction: ["building", 150, 0, 0],
-    hellion: ["building", 150, 0, 0],
-    tank: ["unit", 50, 0, 1],
-    thor: ["unit", 100, 50, 2],
-    reactor: ["addon", 50, 0, 1],
-    tech: ["addon", 50, 0, 1]
+    construction: ["building", 60, 150, 0, 0],
+    hellion: ["building", 60, 150, 0, 0],
+    tank: ["unit", 60, 50, 0, 1],
+    thor: ["unit", 60, 100, 50, 2],
+    reactor: ["addon", 60, 50, 0, 1],
+    tech: ["addon", 60, 50, 0, 1]
   },
   tech: {
-    sheilds: ["tech", 150, 0, 0],
-    stim: ["tech", 150, 0, 0],
-    shells: ["tech", 50, 0, 1],
-    reaver_speed: ["tech", 100, 50, 2],
-    blue_flame: ["tech", 50, 0, 1],
-    seige: ["tech", 50, 0, 1],
-    maybe_extra_energy: ["tech", 50, 0, 1],
-    maybe_extra_energy2: ["tech", 50, 0, 1]
+    sheilds: ["tech", 60, 150, 0, 0],
+    stim: ["tech", 60, 150, 0, 0],
+    shells: ["tech", 60, 50, 0, 1],
+    reaver_speed: ["tech", 60, 100, 50, 2],
+    blue_flame: ["tech", 60, 50, 0, 1],
+    seige: ["tech", 60, 50, 0, 1],
+    maybe_extra_energy: ["tech", 60, 50, 0, 1],
+    maybe_extra_energy2: ["tech", 60, 50, 0, 1]
   },
   reactor: {
-    marine: ["unit", 150, 0, 0],
-    hellion: ["unit", 50, 0, 1],
-    viking: ["unit", 100, 50, 2]
+    marine: ["unit", 60, 150, 0, 0],
+    hellion: ["unit", 60, 50, 0, 1],
+    viking: ["unit", 60, 100, 50, 2]
   },
   engineering: {
-    construction: ["building", 150, 0, 0],
-    weapons1: ["tech", 150, 0, 0],
-    armor1: ["tech", 150, 0, 0]
+    construction: ["building", 60, 150, 0, 0],
+    weapons1: ["tech", 60, 150, 0, 0],
+    armor1: ["tech", 60, 150, 0, 0]
   }
 };
 
@@ -117,8 +117,11 @@ function buildGanttChart(bOrder) {
 var ganttable = [
   {
     name: "cc", tasks: {
-      15: "scv"
+      0: "scv",
+      17: "scv",
+      34: "scv"
     }
+
    // [
    //   { task: "SCV", start: 0, duration: 17, minCost: 50 },
    //   { task: "SCV", start: 17, duration: 17, minCost: 50 },

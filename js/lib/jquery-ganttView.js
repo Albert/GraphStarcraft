@@ -183,7 +183,26 @@ behavior: {
               for (time in building.tasks) {
                 var currentTask = building.tasks[time];
                 var taskDetails = tDesc[building["name"]][currentTask];
-                
+                var size = taskDetails[1];
+                var offset = time;
+                var name = taskDetails[0];
+                var block = $("<div>", {
+                  "class": "ganttview-block tasks_" + name,
+                  "title": name + ", " + size + " seconds",
+                  "css": {
+                    "width": ((size * cellWidth) - 2) + "px",
+                    "height": (cellHeight - 6) + "px",
+                    "left": ((offset * cellWidth) - 1) + "px",
+                  }
+                });
+                block.append($("<div>", { "class": "ganttview-block-text" }).text(name));
+
+                return_times = getFriendlyTimes(time, time + size);
+
+                block.append($("<div>", { "class": "ganttview-block-start" }).text(return_times[0]));
+                block.append($("<div>", { "class": "ganttview-block-end" }).text(return_times[1]));
+                block.append($("<div>", { "class": "ganttview-block-close" }).text("x"));
+                $(rows[i]).append(block);
               }
               
                 var rowIdx = 0;
