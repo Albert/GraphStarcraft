@@ -113,7 +113,7 @@ behavior: {
                 } else {
                   selector = "";
                 }
-                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].itemName)).append(selector);
+                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].building)).append(selector);
                 headerDiv.append(itemDiv);
             }
             div.append(headerDiv);
@@ -178,31 +178,38 @@ behavior: {
 
         addBlocks: function (div, data, cellWidth, cellHeight, start) {
             var rows = $("div.ganttview-blocks div.ganttview-block-container", div);
-            var rowIdx = 0;
             for (var i = 0; i < data.length; i++) { /* for each structure */
-                for (var j = 0; j < data[i].series.length; j++) { /* for each production type (labs for rax) */
+              var building = data[i];
+              for (time in building.tasks) {
+                var currentTask = building.tasks[time];
+                var taskDetails = tDesc[building["name"]][currentTask];
+                
+              }
+              
+                var rowIdx = 0;
+                for (var j = 0; j < data[i].tasks.length; j++) { /* for each production type (labs for rax) */
                   
-                    var series = data[i].series[j];
-                    var size = series.duration;
+                    var tasks = data[i].tasks[j];
+                    var size = tasks.duration;
                     if (size && size > 0) {
                         if (size > 365) { size = 365; } // Keep blocks from overflowing a year
-                        var offset = series.start;
+                        var offset = tasks.start;
                         var block = $("<div>", {
-                            "class": "ganttview-block series_" + series.seriesName,
-                            "title": series.seriesName + ", " + size + " seconds",
+                            "class": "ganttview-block tasks_" + tasks.task,
+                            "title": tasks.task + ", " + size + " seconds",
                             "css": {
                                 "width": ((size * cellWidth) - 2) + "px",
                                 "height": (cellHeight - 6) + "px",
                                 "left": ((offset * cellWidth) - 1) + "px",
                             }
                         });
-                        Chart.addBlockData(block, data[i], series);
-                        if (data[i].series[j].color) {
-                            block.css("background-color", data[i].series[j].color);
+                        Chart.addBlockData(block, data[i], tasks);
+                        if (data[i].tasks[j].color) {
+                            block.css("background-color", data[i].tasks[j].color);
                         }
-                        block.append($("<div>", { "class": "ganttview-block-text" }).text(series.seriesName));
+                        block.append($("<div>", { "class": "ganttview-block-text" }).text(tasks.task));
                         
-                        return_times = getFriendlyTimes(series.start, series.start + series.duration);
+                        return_times = getFriendlyTimes(tasks.start, tasks.start + tasks.duration);
 
                         block.append($("<div>", { "class": "ganttview-block-start" }).text(return_times[0]));
                         block.append($("<div>", { "class": "ganttview-block-end" }).text(return_times[1]));
@@ -214,11 +221,11 @@ behavior: {
             }
         },
         
-        addBlockData: function (block, data, series) {
-        	// This allows custom attributes to be added to the series data objects
+        addBlockData: function (block, data, tasks) {
+        	// This allows custom attributes to be added to the tasks data objects
         	// and makes them available to the 'data' argument of click, resize, and drag handlers
-        	var blockData = { id: data.id, itemName: data.itemName };
-        	$.extend(blockData, series);
+        	var blockData = { id: data.id, building: data.building };
+        	$.extend(blockData, tasks);
         	block.data("block-data", blockData);
         },
 

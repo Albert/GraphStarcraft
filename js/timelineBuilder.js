@@ -1,6 +1,6 @@
 var debugVar;
 function buildGraph() {
-  var workerConstructions = $(".series_SCV");
+  var workerConstructions = $(".tasks_SCV");
   var workerCompletions = [];
   var eventHistory = [];
 
@@ -22,9 +22,9 @@ function buildGraph() {
 
     var purchaseType;
 
-    if (purchase.hasClass("series_SCV")) {
+    if (purchase.hasClass("tasks_SCV")) {
       purchaseType = "newWorker"
-    } else if (purchase.hasClass("series_marine")){
+    } else if (purchase.hasClass("tasks_marine")){
       purchaseType = "newUnit"
     } else {
       purchaseType = "construction"

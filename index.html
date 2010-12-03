@@ -80,7 +80,7 @@ tDesc = {       // BuildingTypes, tasks
 
 bOrder = [         // Gantt Row #, Building Type, events:
   {
-    name: "cc",
+    building: "cc",
     tasks: {
       0: "scv",
       17: "scv",
@@ -88,13 +88,13 @@ bOrder = [         // Gantt Row #, Building Type, events:
     }
   },
   {
-    name: "depot",
+    building: "depot",
     tasks: {
       38: "construction"
     }
   },
   {
-    name: "barracks",
+    building: "barracks",
     tasks: {
       38: "construction",
       69: "marine"
@@ -104,33 +104,37 @@ bOrder = [         // Gantt Row #, Building Type, events:
 
 for (var building in bOrder) {
   for (var task in bOrder[building].tasks) {
-    console.log(task + ", " + tDesc[ bOrder[building].name ][ bOrder[building].tasks[task] ])
+    console.log(task + ", " + tDesc[ bOrder[building].building ][ bOrder[building].tasks[task] ])
   }
 }
 
 
-
-
+function buildGanttChart(bOrder) {
+  chartDiv = $("#ganttChartDiv");
+}
 
 
 var ganttable = [
   {
-    itemName: "CC", series: [
-      { seriesName: "SCV", start: 0, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 17, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 34, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 51, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 68, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 85, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 102, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 119, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 136, duration: 17, minCost: 50 },
-      { seriesName: "Orbital Command", start: 153, duration: 35, minCost: 150 },
-      { seriesName: "SCV", start: 188, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 205, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 222, duration: 17, minCost: 50 },
-      { seriesName: "SCV", start: 239, duration: 17, minCost: 50 }
-    ]
+    name: "cc", tasks: {
+      15: "scv"
+    }
+   // [
+   //   { task: "SCV", start: 0, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 17, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 34, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 51, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 68, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 85, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 102, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 119, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 136, duration: 17, minCost: 50 },
+   //   { task: "Orbital Command", start: 153, duration: 35, minCost: 150 },
+   //   { task: "SCV", start: 188, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 205, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 222, duration: 17, minCost: 50 },
+   //   { task: "SCV", start: 239, duration: 17, minCost: 50 }
+   // ]
   }
 ];
 
