@@ -113,7 +113,7 @@ behavior: {
                 } else {
                   selector = "";
                 }
-                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].building)).append(selector);
+                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].name)).append(selector);
                 headerDiv.append(itemDiv);
             }
             div.append(headerDiv);
@@ -182,20 +182,20 @@ behavior: {
               var building = data[i];
               for (time in building.tasks) {
                 var currentTask = building.tasks[time];
-                var taskDetails = tDesc[building["name"]][currentTask];
+                var taskDetails = taskDescription[building["name"]][currentTask];
+                var type = taskDetails[0];
                 var size = taskDetails[1];
                 var offset = time;
-                var name = taskDetails[0];
                 var block = $("<div>", {
-                  "class": "ganttview-block tasks_" + name,
-                  "title": name + ", " + size + " seconds",
+                  "class": "ganttview-block tasks_" + type,
+                  "title": currentTask + ", " + size + " seconds",
                   "css": {
                     "width": ((size * cellWidth) - 2) + "px",
                     "height": (cellHeight - 6) + "px",
                     "left": ((offset * cellWidth) - 1) + "px",
                   }
                 });
-                block.append($("<div>", { "class": "ganttview-block-text" }).text(name));
+                block.append($("<div>", { "class": "ganttview-block-text" }).text(currentTask));
 
                 return_times = getFriendlyTimes(time, time + size);
 
@@ -204,48 +204,7 @@ behavior: {
                 block.append($("<div>", { "class": "ganttview-block-close" }).text("x"));
                 $(rows[i]).append(block);
               }
-              
-                var rowIdx = 0;
-                for (var j = 0; j < data[i].tasks.length; j++) { /* for each production type (labs for rax) */
-                  
-                    var tasks = data[i].tasks[j];
-                    var size = tasks.duration;
-                    if (size && size > 0) {
-                        if (size > 365) { size = 365; } // Keep blocks from overflowing a year
-                        var offset = tasks.start;
-                        var block = $("<div>", {
-                            "class": "ganttview-block tasks_" + tasks.task,
-                            "title": tasks.task + ", " + size + " seconds",
-                            "css": {
-                                "width": ((size * cellWidth) - 2) + "px",
-                                "height": (cellHeight - 6) + "px",
-                                "left": ((offset * cellWidth) - 1) + "px",
-                            }
-                        });
-                        Chart.addBlockData(block, data[i], tasks);
-                        if (data[i].tasks[j].color) {
-                            block.css("background-color", data[i].tasks[j].color);
-                        }
-                        block.append($("<div>", { "class": "ganttview-block-text" }).text(tasks.task));
-                        
-                        return_times = getFriendlyTimes(tasks.start, tasks.start + tasks.duration);
-
-                        block.append($("<div>", { "class": "ganttview-block-start" }).text(return_times[0]));
-                        block.append($("<div>", { "class": "ganttview-block-end" }).text(return_times[1]));
-                        block.append($("<div>", { "class": "ganttview-block-close" }).text("x"));
-                        $(rows[rowIdx]).append(block);
-                    }
-                }
-                    rowIdx = rowIdx + 1;
             }
-        },
-        
-        addBlockData: function (block, data, tasks) {
-        	// This allows custom attributes to be added to the tasks data objects
-        	// and makes them available to the 'data' argument of click, resize, and drag handlers
-        	var blockData = { id: data.id, building: data.building };
-        	$.extend(blockData, tasks);
-        	block.data("block-data", blockData);
         },
 
         applyLastClass: function (div) {
@@ -323,29 +282,25 @@ behavior: {
             return has;
         }
     };
-    
-    
-    /* my stuff */
-    function getFriendlyTimes(start_time, end_time) {
-      var return_times = [];
-      if (start_time % 60 < 10) {
-        start_lead = "0";
-      } else {
-        start_lead = "";
-      }
-      if (end_time % 60 < 10) {
-        end_lead = "0";
-      } else {
-        end_lead = "";
-      }
-      var friendly_start = Math.floor(start_time/60) + ":" + start_lead + (start_time % 60);
-      var friendly_end   = Math.floor(end_time/60) + ":" + end_lead + (end_time % 60);
-      
-      return_times.push(friendly_start);
-      return_times.push(friendly_end);
-      
-      return return_times;
-    }
-    
-
 })(jQuery);
+
+function getFriendlyTimes(start_time, end_time) {
+  var return_times = [];
+  if (start_time % 60 < 10) {
+    start_lead = "0";
+  } else {
+    start_lead = "";
+  }
+  if (end_time % 60 < 10) {
+    end_lead = "0";
+  } else {
+    end_lead = "";
+  }
+  var friendly_start = Math.floor(start_time/60) + ":" + start_lead + (start_time % 60);
+  var friendly_end   = Math.floor(end_time/60) + ":" + end_lead + (end_time % 60);
+  
+  return_times.push(friendly_start);
+  return_times.push(friendly_end);
+  
+  return return_times;
+}
