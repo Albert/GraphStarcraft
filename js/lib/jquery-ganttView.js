@@ -70,14 +70,6 @@ behavior: {
             container.css("width", (w + 2) + "px");
 
             Chart.applyLastClass(container);
-
-            if (opts.behavior.clickable) { 
-            	Behavior.bindBlockClick(container, opts.behavior.onClick); 
-        	}
-        	
-            if (opts.behavior.resizable) { 
-            	Behavior.bindBlockResize(container, opts.cellWidth, opts.start, opts.behavior.onResize); 
-        	}
             
             if (opts.behavior.draggable) { 
             	Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); 
@@ -216,24 +208,6 @@ behavior: {
     };
 
     var Behavior = {
-  	
-      bindBlockClick: function (div, callback) {
-          $("div.ganttview-block", div).live("click", function () {
-              if (callback) { callback($(this).data("block-data")); }
-          });
-      },
-      
-      bindBlockResize: function (div, cellWidth, startDate, callback) {
-      	$("div.ganttview-block", div).resizable({
-      		grid: cellWidth, 
-      		handles: "e,w",
-      		stop: function () {
-      			var block = $(this);
-      			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
-      			if (callback) { callback(block.data("block-data")); }
-      		}
-      	});
-      },
       
       bindBlockDrag: function (div, cellWidth, startDate, callback) {
       	$("div.ganttview-block", div).draggable({
@@ -242,9 +216,6 @@ behavior: {
       		stop: function () {
       			var block = $(this);
       			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
-      			if (callback) { callback(block.data("block-data"));
-      			  buildGraph();
-    			  }
       		}
       	});
       },
@@ -257,12 +228,10 @@ behavior: {
   			// Set new start time
   			var timeFromStart = Math.round(offset / cellWidth);
   			var newStart = startDate + timeFromStart;
-  			block.data("block-data").start = newStart;
 
   			// Set new end date
        	var width = block.outerWidth();
   			var numberOfSeconds = Math.round(width / cellWidth);
-  			block.data("block-data").duration = numberOfSeconds;
   			return_times = getFriendlyTimes(newStart, newStart + numberOfSeconds);
 
   			$("div.ganttview-block-start", block).text(return_times[0]);

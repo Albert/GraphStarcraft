@@ -13,6 +13,24 @@ function buildGraph() {
   var purchaseHistory = [];
   var latestEvent = 0;
 
+  for(building in buildOrder) {
+    var buildingName = buildOrder[building].name;
+
+    for(task in buildOrder[building].tasks){
+      var eventName       = buildOrder[building].tasks[task];
+
+      var eventStart      = task;
+
+      var eventType       = taskDescription[buildingName][eventName][0];
+      var eventDuration   = taskDescription[buildingName][eventName][1];
+      var eventMinCost    = taskDescription[buildingName][eventName][2];
+      var eventGasCost    = taskDescription[buildingName][eventName][3];
+      var eventSupCost    = taskDescription[buildingName][eventName][4];
+
+      var eventEnd        = eventStart + eventDuration;
+    }
+  }
+
   $(".ganttview-block").each(function(i) {
     purchase = $(this);
     var blockStart    = purchase.data("block-data").start;
@@ -29,7 +47,6 @@ function buildGraph() {
     } else {
       purchaseType = "construction"
     }
-    debugVar = purchase;
 
     var buildEvent   = {"time": blockStart, "eventType": purchaseType + "Begins", "minCost": blockMinCost};
     var finishEvent  = {"time": blockEnd, "eventType": purchaseType + "Ends" };
