@@ -1,23 +1,60 @@
 buildOrder = [         // Gantt Row #, Building Type, events:
   {
     name: "cc",
-    tasks: {
-      0: "scv",
-      17: "scv",
-      34: "scv"
-    }
+    tasks: [
+      {
+        taskTime: 0,
+        taskName: "scv"
+      },
+      {
+        taskTime: 17,
+        taskName: "scv"
+      },
+      {
+        taskTime: 34,
+        taskName: "scv"
+      },
+      {
+        taskTime: 51,
+        taskName: "scv"
+      },
+      {
+        taskTime: 68,
+        taskName: "scv"
+      },
+      {
+        taskTime: 85,
+        taskName: "scv"
+      },
+      {
+        taskTime: 102,
+        taskName: "scv"
+      },
+      {
+        taskTime: 119,
+        taskName: "scv"
+      },
+      {
+        taskTime: 136,
+        taskName: "scv"
+      },
+      {
+        taskTime: 200,
+        taskName: "scv"
+      }
+    ]
   },
-  {
-    name: "depot",
-    tasks: {
-      38: "construction"
-    }
-  },
-  {
+    {
     name: "barracks",
-    tasks: {
-      38: "construction",
-      69: "marine"
-    }
-  }  
+    tasks: [
+      {
+        taskTime: 120,
+        taskName: "construction"
+      },
+      {
+        taskTime: 170,
+        taskName: "marine"
+      }
+    ]
+  }
 ]

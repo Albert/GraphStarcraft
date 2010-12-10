@@ -17,9 +17,9 @@ function buildGraph() {
     var buildingName = buildOrder[building].name;
 
     for(task in buildOrder[building].tasks){
-      var eventName       = buildOrder[building].tasks[task];
+      var eventName       = buildOrder[building].tasks[task].taskName;
 
-      var eventStart      = task;
+      var eventStart      = parseInt(buildOrder[building].tasks[task].taskTime);
 
       var eventType       = taskDescription[buildingName][eventName][0];
       var eventDuration   = taskDescription[buildingName][eventName][1];
@@ -28,36 +28,18 @@ function buildGraph() {
       var eventSupCost    = taskDescription[buildingName][eventName][4];
 
       var eventEnd        = eventStart + eventDuration;
+      
+      var buildEvent   = {"time": eventStart, "eventType": eventType + "Begins", "minCost": eventMinCost};
+      var finishEvent  = {"time": eventEnd, "eventType": eventType + "Ends" };
+
+      eventHistory.push(buildEvent);
+      eventHistory.push(finishEvent);
+
+      if (latestEvent < eventEnd) {
+        latestEvent = eventEnd;
+      }
     }
   }
-
-  $(".ganttview-block").each(function(i) {
-    purchase = $(this);
-    var blockStart    = purchase.data("block-data").start;
-    var blockDuration = purchase.data("block-data").duration;
-    var blockEnd      = blockStart + blockDuration;
-    var blockMinCost  = purchase.data("block-data").minCost;
-
-    var purchaseType;
-
-    if (purchase.hasClass("tasks_SCV")) {
-      purchaseType = "newWorker"
-    } else if (purchase.hasClass("tasks_marine")){
-      purchaseType = "newUnit"
-    } else {
-      purchaseType = "construction"
-    }
-
-    var buildEvent   = {"time": blockStart, "eventType": purchaseType + "Begins", "minCost": blockMinCost};
-    var finishEvent  = {"time": blockEnd, "eventType": purchaseType + "Ends" };
-
-    eventHistory.push(buildEvent);
-    eventHistory.push(finishEvent);
-
-    if (latestEvent < blockEnd) {
-      latestEvent = blockEnd;
-    }
-  });
 
   var minCount = 50;                  //  you start off w/ 50 min
   var workerCount = 6;                //  ... and 6 workers
@@ -70,13 +52,13 @@ function buildGraph() {
     for (var j = 0; j < eventHistory.length; j ++) {
       if (eventHistory[j].time == i) {
         currentEvent = eventHistory[j];
-        if (currentEvent.eventType == "newWorkerBegins") {
+        if (currentEvent.eventType == "workerBegins") {
           minCount = minCount - currentEvent.minCost;
         }
-        if (currentEvent.eventType == "newWorkerEnds") {
+        if (currentEvent.eventType == "workerEnds") {
           workerCount = workerCount + 1;
         }
-        if (currentEvent.eventType == "newUnitBegins") {
+        if (currentEvent.eventType == "unitBegins") {
           minCount = minCount - currentEvent.minCost;
         }
         if (currentEvent.eventType == "constructionBegins") {
@@ -117,8 +99,9 @@ function buildGraph() {
   for (var i = 0; i < Math.ceil(maxMinCount/50); i++) {
     yTicks.push(i * 50);
   }
-  
+
   $("#graphDiv").html("");
+
   $.jqplot('graphDiv',  [dataPoints],
   {
     axes: {

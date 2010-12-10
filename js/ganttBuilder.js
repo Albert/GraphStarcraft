@@ -1,4 +1,7 @@
 /*
+Based off of:
+
+/*
 jQuery.ganttView v.0.8.2
 Copyright (c) 2010 JC Grubbs - jc.grubbs@devmynd.com
 MIT License Applies
@@ -174,10 +177,10 @@ behavior: {
               var building = data[i];
               for (time in building.tasks) {
                 var currentTask = building.tasks[time];
-                var taskDetails = taskDescription[building["name"]][currentTask];
+                var taskDetails = taskDescription[building.name][currentTask.taskName];
                 var type = taskDetails[0];
                 var size = taskDetails[1];
-                var offset = time;
+                var offset = currentTask.taskTime;
                 var block = $("<div>", {
                   "class": "ganttview-block tasks_" + type,
                   "title": currentTask + ", " + size + " seconds",
@@ -187,13 +190,17 @@ behavior: {
                     "left": ((offset * cellWidth) - 1) + "px",
                   }
                 });
-                block.append($("<div>", { "class": "ganttview-block-text" }).text(currentTask));
+                block.append($("<div>", { "class": "ganttview-block-text" }).text(currentTask.taskName));
 
                 return_times = getFriendlyTimes(time, time + size);
 
                 block.append($("<div>", { "class": "ganttview-block-start" }).text(return_times[0]));
                 block.append($("<div>", { "class": "ganttview-block-end" }).text(return_times[1]));
                 block.append($("<div>", { "class": "ganttview-block-close" }).text("x"));
+                var blockId = i + "_" + time + "_" + currentTask;
+
+                block.data("blockId", blockId);
+
                 $(rows[i]).append(block);
               }
             }
@@ -215,11 +222,22 @@ behavior: {
       		grid: [cellWidth, cellWidth],
       		stop: function () {
       			var block = $(this);
+      			var blockId = block.data("blockId");
       			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
+      			Behavior.updateDataAndRedraw(div, block, cellWidth, blockId);
       		}
       	});
       },
       
+      updateDataAndRedraw: function (div, block, cellWidth, blockId) {
+        var blockIdComponents = blockId.split("_");
+        var blockBuilding = blockIdComponents[0];
+        var blockTimeSig  = blockIdComponents[1];
+        var blockTaskName = blockIdComponents[2];
+        var x = buildOrder[blockBuilding]["tasks"][blockTimeSig];
+        console.log(x);
+      },
+
       updateDataAndPosition: function (div, block, cellWidth, startDate) {
       	var container = $("div.ganttview-slide-container", div);
       	var scroll = container.scrollLeft();
