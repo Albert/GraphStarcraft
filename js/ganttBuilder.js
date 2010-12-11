@@ -97,16 +97,10 @@ behavior: {
             var headerDiv = $("<div>", { "class": "ganttview-vtheader" });
             for (var i = 0; i < data.length; i++) {
                 var itemDiv = $("<div>", { "class": "ganttview-vtheader-item", "css": { "height": (cellHeight+1) + "px" }});
-                var selector;
-                if (data[i].selectOptions != undefined) {
-                  selector = $("<select>");
-                  for (var j = 0; j < data[i].selectOptions.length; j++) {
-                    option = data[i].selectOptions[j];
-                    dom_option = $("<option>", { "value": option.name }).html(option.name);
-                    selector.append(dom_option);
-                  }
-                } else {
-                  selector = "";
+                var selector = $("<select/>");
+                for (taskName in taskDescription[data[i].name]) {
+                  dom_option = $("<option>", { "value": taskName }).html(taskName);
+                  selector.append(dom_option);
                 }
                 itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].name)).append(selector);
                 headerDiv.append(itemDiv);

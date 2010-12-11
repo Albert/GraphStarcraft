@@ -42,7 +42,10 @@ function buildGraph() {
   }
 
   var minCount = 50;                  //  you start off w/ 50 min
+  var gasCount = 0;                   //  ... and 0 gas
   var workerCount = 6;                //  ... and 6 workers
+  var supplyCount = 6;                //  ... and 6 consumed supply
+  var supplyCap = 11;                 //  ... and 11 supply cap
   var harvestRateFast = 42.5 / 60.0;  //  workers 1  through 16 harvest at 42.5 minerals a minute (/60 for per sec)
   var harvestRateSlow = 16.0 / 60.0;  //  workers 17 through 24 harvest at 16.0 minerals a minute (/60 for per sec)
   var dataPoints = [];
@@ -61,11 +64,11 @@ function buildGraph() {
         if (currentEvent.eventType == "unitBegins") {
           minCount = minCount - currentEvent.minCost;
         }
-        if (currentEvent.eventType == "constructionBegins") {
+        if (currentEvent.eventType == "buildingBegins") {
           minCount = minCount - currentEvent.minCost;
           workerCount = workerCount - 1;
         }
-        if (currentEvent.eventType == "constructionEnds") {
+        if (currentEvent.eventType == "buildingEnds") {
           workerCount = workerCount + 1;
         }
       }
@@ -119,5 +122,4 @@ function buildGraph() {
     }]
   }
 );
-debugVar = eventHistory;
 }
