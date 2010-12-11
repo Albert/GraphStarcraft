@@ -1,15 +1,7 @@
 var debugVar;
 function buildGraph() {
-  var workerConstructions = $(".tasks_SCV");
   var workerCompletions = [];
   var eventHistory = [];
-
-  for (var i = 0; i < workerConstructions.size(); i++) {
-    var blockEnd = $.data(workerConstructions[i], "block-data").start;
-    var myEvent = {"time": blockEnd, "eventType": "newWorker"};
-    eventHistory.push(myEvent);
-  }
-
   var purchaseHistory = [];
   var latestEvent = 0;
 
@@ -26,11 +18,26 @@ function buildGraph() {
       var eventMinCost    = taskDescription[buildingName][eventName][2];
       var eventGasCost    = taskDescription[buildingName][eventName][3];
       var eventSupCost    = taskDescription[buildingName][eventName][4];
+      var eventCap        = taskDescription[buildingName][eventName][5];
 
       var eventEnd        = eventStart + eventDuration;
       
-      var buildEvent   = {"time": eventStart, "eventType": eventType + "Begins", "minCost": eventMinCost};
-      var finishEvent  = {"time": eventEnd, "eventType": eventType + "Ends" };
+      var buildEvent   = {
+        "time": eventStart,
+        "eventType": eventType + "Begins",
+        "minCost": eventMinCost,
+        "gasCost": eventGasCost,
+        "supCost": eventSupCost,
+        "cap": 0
+      };
+      var finishEvent  = {
+        "time": eventEnd,
+        "eventType": eventType + "Ends",
+        "minCost": 0,
+        "gasCost": 0,
+        "supCost": 0,
+        "cap": eventCap
+      };
 
       eventHistory.push(buildEvent);
       eventHistory.push(finishEvent);
@@ -44,28 +51,33 @@ function buildGraph() {
   var minCount = 50;                  //  you start off w/ 50 min
   var gasCount = 0;                   //  ... and 0 gas
   var workerCount = 6;                //  ... and 6 workers
-  var supplyCount = 6;                //  ... and 6 consumed supply
-  var supplyCap = 11;                 //  ... and 11 supply cap
-  var harvestRateFast = 42.5 / 60.0;  //  workers 1  through 16 harvest at 42.5 minerals a minute (/60 for per sec)
-  var harvestRateSlow = 16.0 / 60.0;  //  workers 17 through 24 harvest at 16.0 minerals a minute (/60 for per sec)
+  var supCount = 6;                   //  ... and 6 consumed supply
+  var cap = 11;                       //  ... and 11 supply cap
+  var fastMinerRate = 42.5 / 60.0;  //  workers 1  through 16 harvest at 42.5 minerals a minute (/60 for per sec)
+  var slowMinerRate = 16.0 / 60.0;  //  workers 17 through 24 harvest at 16.0 minerals a minute (/60 for per sec)
+  var minPoints = [];
+  var gasPoints = [];
+  var supPoints = [];
+  var capPoints = [];
   var dataPoints = [];
   var maxMinCount = 0;
+  var minHarvest  = 0;
+  var gasHarvest  = 0;
 
   for (var i = 0; i < latestEvent; i++) {
     for (var j = 0; j < eventHistory.length; j ++) {
       if (eventHistory[j].time == i) {
         currentEvent = eventHistory[j];
-        if (currentEvent.eventType == "workerBegins") {
-          minCount = minCount - currentEvent.minCost;
-        }
-        if (currentEvent.eventType == "workerEnds") {
+
+        minCount = minCount - currentEvent.minCost;
+        gasCount = gasCount - currentEvent.gasCost;
+        supCount = supCount + currentEvent.supCost;
+        cap      = cap      + currentEvent.cap;
+
+      if (currentEvent.eventType == "workerEnds") {
           workerCount = workerCount + 1;
         }
-        if (currentEvent.eventType == "unitBegins") {
-          minCount = minCount - currentEvent.minCost;
-        }
         if (currentEvent.eventType == "buildingBegins") {
-          minCount = minCount - currentEvent.minCost;
           workerCount = workerCount - 1;
         }
         if (currentEvent.eventType == "buildingEnds") {
@@ -73,18 +85,41 @@ function buildGraph() {
         }
       }
     }
+    var minerCount = workerCount;
     if (i > 6) {
-      harvest = workerCount * harvestRateFast; // takes roughly 6 sec for workers to come back with $
-    } else {
-      harvest = 0;
+      var efficientMiners   = (minerCount < 16) ? minerCount : 16;
+      var inefficientMiners = (minerCount < 16) ? 0 : minerCount - 16;
+      var slowMiners        = (inefficientMiners > 8) ? 8 : inefficientMiners;
+      minHarvest = (efficientMiners * fastMinerRate) + (slowMiners * slowMinerRate);
     }
-    minCount = minCount + harvest;
+    minCount = minCount + minHarvest ;
 
-    var dataPoint = [];
-    dataPoint[0] = i;
-    dataPoint[1] = minCount;
-    dataPoints.push(dataPoint);
+    /* gas calculation credits: http://www.starcraft2-wiki.com/guides/gameplay-guides/gas-matters */
+    gaserCount = 3;
+    gasHarvest = gaserCount * .76;
+    gasCount = gasCount + gasHarvest;
+
+    var minPoint = [];
+    minPoint[0] = i;
+    minPoint[1] = minCount;
+    minPoints.push(minPoint);
     
+    var gasPoint = [];
+    gasPoint[0] = i;
+    gasPoint[1] = gasCount;
+    gasPoints.push(gasPoint);
+    
+    var supPoint = [];
+    supPoint[0] = i;
+    supPoint[1] = supCount;
+    supPoints.push(supCount);
+    
+    var capPoint = [];
+    capPoint[0] = i;
+    capPoint[1] = cap;
+    capPoints.push(cap);
+    
+    dataPoints = [minPoints, gasPoints, supPoints, capPoints]
     if (maxMinCount < minCount) {
       maxMinCount = minCount;
     }
@@ -93,9 +128,8 @@ function buildGraph() {
   var xTicks = [0];
   var yTicks = [0];
 
-  var minutesCount = Math.ceil(latestEvent/60);
-  for (var i = 0; i < minutesCount; i++) {
-    xTicks.push(i * 60);
+  for (var i = 0; i <= 9; i++) {
+    xTicks.push([i * 60, i]);
   }
   
   maxMinCount = 700;
@@ -105,21 +139,32 @@ function buildGraph() {
 
   $("#graphDiv").html("");
 
-  $.jqplot('graphDiv',  [dataPoints],
+  $.jqplot('graphDiv', dataPoints,
   {
     axes: {
       xaxis: {
-        min: 0,
         ticks: xTicks
       },
       yaxis: {
         min: -50,
         ticks: yTicks
+      },
+      y2axis: {
+        tickOptions: {
+          showGridline: false
+        }
       }
     },
-    series:[{
-      markerOptions:{show: false}
-    }]
+    series:[
+        {label:'Minerals',    color: '#4bb2c5', markerOptions:{show: false}},
+        {label:'Gas',         color: '#00ff00', markerOptions:{show: false}},
+        {label:'Supply',      color: '#ff5800', markerOptions:{show: false}, yaxis:'y2axis'},
+        {label:'Supply Cap',  color: '#EAA228', markerOptions:{show: false}, yaxis:'y2axis'}
+    ],
   }
 );
 }
+
+
+
+
