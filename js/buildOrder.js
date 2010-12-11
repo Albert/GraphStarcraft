@@ -20,14 +20,22 @@ var buildOrder = [         // Gantt Row #, Building Type, events:
   {
     name: "depot",
     tasks: [
-      { taskTime: 55, taskName: "construction" }
+      { taskTime: 55, taskName: "construction" },
+      { taskTime: 157, taskName: "construction" }
     ]
   },
   {
     name: "barracks",
     tasks: [
-      { taskTime: 120, taskName: "construction" },
-      { taskTime: 170, taskName: "marine" }
+      { taskTime: 93, taskName: "construction" },
+      { taskTime: 153, taskName: "marine" },
+      { taskTime: 178, taskName: "marine" },
+    ]
+  },
+  {
+    name: "refinery",
+    tasks: [
+      { taskTime: 110, taskName: "construction" }
     ]
   }
 ]

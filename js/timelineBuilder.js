@@ -74,7 +74,7 @@ function buildGraph() {
         supCount = supCount + currentEvent.supCost;
         cap      = cap      + currentEvent.cap;
 
-      if (currentEvent.eventType == "workerEnds") {
+        if (currentEvent.eventType == "workerEnds") {
           workerCount = workerCount + 1;
         }
         if (currentEvent.eventType == "buildingBegins") {
@@ -150,6 +150,7 @@ function buildGraph() {
         ticks: yTicks
       },
       y2axis: {
+        showTicks: false,
         tickOptions: {
           showGridline: false
         }
@@ -164,7 +165,3 @@ function buildGraph() {
   }
 );
 }
-
-
-
-
