@@ -192,7 +192,7 @@ behavior: {
                 });
                 block.append($("<div>", { "class": "ganttview-block-text" }).text(currentTask.taskName));
 
-                return_times = getFriendlyTimes(time, time + size);
+                return_times = getFriendlyTimes(offset, offset + size);
 
                 block.append($("<div>", { "class": "ganttview-block-start" }).text(return_times[0]));
                 block.append($("<div>", { "class": "ganttview-block-end" }).text(return_times[1]));
@@ -223,7 +223,6 @@ behavior: {
       		stop: function () {
       			var block = $(this);
       			var blockId = block.data("blockId");
-      			Behavior.updateDataAndPosition(div, block, cellWidth, startDate);
       			Behavior.updateDataAndRedraw(div, block, cellWidth, blockId);
       		}
       	});
@@ -234,35 +233,37 @@ behavior: {
         var blockBuilding = blockIdComponents[0];
         var blockTimeSig  = blockIdComponents[1];
         var blockTaskName = blockIdComponents[2];
-        var x = buildOrder[blockBuilding]["tasks"][blockTimeSig];
-        console.log(x);
+
+        var container = $("div.ganttview-slide-container", div);
+        var scroll = container.scrollLeft();
+        var offset = block.offset().left - container.offset().left - 1 + scroll;
+
+        // Set new start time
+        var newStart = Math.round(offset / cellWidth);
+
+        buildOrder[blockBuilding]["tasks"][blockTimeSig].taskTime = newStart;
+        $("#ganttChartDiv").html("");
+        $(function () {
+          $("#ganttChartDiv").ganttView({ 
+            data: buildOrder,
+            start: 0,
+            end: 240,
+            slideWidth: 3000,
+            cellWidth: 4,
+            cellHeight: 40,
+            behavior: {
+              resizable: false,
+              onDrag: function (data) { 
+                  buildGraph();
+              }
+            }
+          });
+        });
       },
 
-      updateDataAndPosition: function (div, block, cellWidth, startDate) {
-      	var container = $("div.ganttview-slide-container", div);
-      	var scroll = container.scrollLeft();
-	    	var offset = block.offset().left - container.offset().left - 1 + scroll;
-
-  			// Set new start time
-  			var timeFromStart = Math.round(offset / cellWidth);
-  			var newStart = startDate + timeFromStart;
-
-  			// Set new end date
-       	var width = block.outerWidth();
-  			var numberOfSeconds = Math.round(width / cellWidth);
-  			return_times = getFriendlyTimes(newStart, newStart + numberOfSeconds);
-
-  			$("div.ganttview-block-start", block).text(return_times[0]);
-  			$("div.ganttview-block-end", block).text(return_times[1]);
-
-  			// Remove top and left properties to avoid incorrect block positioning,
-      	// set position to relative to keep blocks relative to scrollbar when scrolling
-	    	block.css("left", offset + "px");
-      }
     };
 
     var ArrayUtils = {
-    	
         contains: function (arr, obj) {
             var has = false;
             for (var i = 0; i < arr.length; i++) { if (arr[i] == obj) { has = true; } }
