@@ -1,4 +1,4 @@
-var buildOrderOther = [
+var buildOrder = [
   {
     name: "command_center",
     tasks: [
@@ -30,7 +30,7 @@ var buildOrderyetanother = [
   }
 ]
 
-var buildOrder = [         // Gantt Row #, Building Type, events:
+var buildOrderAiaodhfo = [         // Gantt Row #, Building Type, events:
   {
     name: "command_center",
     tasks: [

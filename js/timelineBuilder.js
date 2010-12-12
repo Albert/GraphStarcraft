@@ -86,7 +86,7 @@ function buildGraph() {
           workerCount = workerCount + 1;
         }
         if (currentEvent.eventType.substring(0, 9) == "gasWorker" && currentEvent.eventSide == "beginning") {
-          refineryGasers[building] = parseInt(currentEvent.eventType.split("_")[1]);
+          refineryGasers[currentEvent.buildingIndex] = parseInt(currentEvent.eventType.split("_")[1]);
         }
         if (currentEvent.eventType == "mule") {
           if (currentEvent.eventSide == "beginning") {

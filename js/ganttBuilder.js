@@ -111,7 +111,7 @@ behavior: {
                 var input =$("<input>", {"type": "submit", "value": "Add", "id": "for_row_" + i});
                 input.click(function() {
                   var newTask = $(this).siblings('select').attr('value');
-                  var rowIndex = $(this).attr('id').replace("for_row_", "");
+                  var rowIndex = parseInt($(this).attr('id').replace("for_row_", ""));
                   var taskType = taskDescription[buildOrder[rowIndex].name][newTask][0];
 
                   var lastEventEnd = 0;

@@ -54,7 +54,13 @@ taskDescription = {       // BuildingTypes, tasks (type, time, minerals, gas, su
     shells:               ["tech",       60,  50,  50, 0,  0],
     nitro_pack:           ["tech",      100,  50,  50, 0,  0],
     infernal_preigniter:  ["tech",      110, 150, 150, 0,  0],
-    seige:                ["tech",       80, 100, 100, 0,  0]
+    seige:                ["tech",       80, 100, 100, 0,  0],
+    strike_cannon:        ["tech",      110, 150, 150, 0,  0],
+    caduceus_reactor:     ["tech",       80, 100, 100, 0,  0],
+    corvid_reactor:       ["tech",      110, 150, 150, 0,  0],
+    durable_materials:    ["tech",      110, 150, 150, 0,  0],
+    seeker_missile:       ["tech",      110, 150, 150, 0,  0],
+    cloaking_field:       ["tech",      110, 200, 200, 0,  0]
   },
   reactor: {
     marine:               ["unit",       25,  50,   0, 1,  0],
@@ -63,18 +69,42 @@ taskDescription = {       // BuildingTypes, tasks (type, time, minerals, gas, su
     medivac:              ["unit",       42, 100, 100, 2,  0]
   },
   ghost_academy: {
-    construction:         ["building", 40, 150, 50, 0, 0]
+    construction:         ["building", 40, 150, 50, 0, 0],
+    nuke:                 ["tech",     60, 100, 100, 0, 0],
+    personal_cloak:       ["tech",    120, 150, 150, 0, 0],
+    moebius_reactor:      ["tech",     80, 100, 100, 0, 0]
   },
   fusion_core: {
-    construction:         ["building", 65, 150, 150, 0, 0]
+    construction:         ["building", 65, 150, 150, 0, 0],
+    behemoth_reactor:     ["tech",     80, 150, 150, 0, 0],
+    weapon_refit:         ["tech",     60, 150, 150, 0, 0]
   },
   engineering: {
     construction:         ["building", 60, 150, 0, 0, 0],
-    weapons1:             ["tech", 60, 150, 0, 0, 0],
-    armor1:               ["tech", 60, 150, 0, 0, 0]
+    infantry_weapons1:    ["tech", 160, 100, 100, 0, 0],
+    infantry_weapons2:    ["tech", 190, 175, 175, 0, 0],
+    infantry_weapons3:    ["tech", 220, 250, 250, 0, 0],
+    infantry_armor1:      ["tech", 160, 100, 100, 0, 0],
+    infantry_armor2:      ["tech", 190, 175, 175, 0, 0],
+    infantry_armor3:      ["tech", 220, 250, 250, 0, 0],
+    hi_sec_tracking:      ["tech",  80, 100, 100, 0, 0],
+    building_armor:       ["tech", 140, 150, 150, 0, 0],
+    neosteel_frame:       ["tech", 110, 100, 100, 0, 0]
   },
   armory: {
-    construction:         ["building", 60, 150, 100, 0, 0]
+    construction:         ["building", 60, 150, 100, 0, 0],
+    vehicle_weapons1:     ["tech", 160, 100, 100, 0, 0],
+    vehicle_weapons2:     ["tech", 190, 175, 175, 0, 0],
+    vehicle_weapons3:     ["tech", 220, 250, 250, 0, 0],
+    vehicle_plating1:     ["tech", 160, 100, 100, 0, 0],
+    vehicle_plating2:     ["tech", 190, 175, 175, 0, 0],
+    vehicle_plating3:     ["tech", 220, 250, 250, 0, 0],
+    ship_weapons1:        ["tech", 160, 100, 100, 0, 0],
+    ship_weapons2:        ["tech", 190, 175, 175, 0, 0],
+    ship_weapons3:        ["tech", 220, 250, 250, 0, 0],
+    ship_plating1:        ["tech", 160, 100, 100, 0, 0],
+    ship_plating2:        ["tech", 190, 175, 175, 0, 0],
+    ship_plating3:        ["tech", 220, 250, 250, 0, 0]
   },
   bunker: {
     construction:         ["building", 35, 100, 0, 0, 0],
