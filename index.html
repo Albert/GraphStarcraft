@@ -30,23 +30,7 @@
 
   <script type="text/javascript" charset="utf-8">
 
-
-  $(function () {
-    $("#ganttChartDiv").ganttView({ 
-      data: buildOrder,
-      start: 0,
-      end: 480,
-      slideWidth: 2175,
-      cellWidth: 4,
-      cellHeight: 40,
-      behavior: {
-        resizable: false,
-        onDrag: function (data) { 
-            buildGraph();
-        }
-      }
-    });
-  });
+ganttTheData();
 </script>
 </body>
 </html>

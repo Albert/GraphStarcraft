@@ -10,9 +10,9 @@ taskDescription = {       // BuildingTypes, tasks (type, time, minerals, gas, su
   },
   refinery: {
     construction:         ["building",   30,  75,   0, 0,  0],
-    1:                    ["gasWorker",   5,   0,   0, 0,  0],
-    2:                    ["gasWorker",   5,   0,   0, 0,  0],
-    3:                    ["gasWorker",   5,   0,   0, 0,  0]
+    1:                    ["gasWorker_1",   5,   0,   0, 0,  0],
+    2:                    ["gasWorker_2",   5,   0,   0, 0,  0],
+    3:                    ["gasWorker_3",   5,   0,   0, 0,  0]
   },
   barracks: {
     construction:         ["building",   60, 150,   0, 0,  0],

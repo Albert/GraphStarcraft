@@ -35,7 +35,8 @@ var buildOrder = [         // Gantt Row #, Building Type, events:
   {
     name: "refinery",
     tasks: [
-      { taskTime: 110, taskName: "construction" }
+      { taskTime: 110, taskName: "construction" },
+      { taskTime: 140, taskName: 3 }
     ]
   }
 ]

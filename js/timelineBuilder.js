@@ -1,6 +1,5 @@
 var debugVar;
 function buildGraph() {
-  var workerCompletions = [];
   var eventHistory = [];
   var purchaseHistory = [];
   var latestEvent = 0;
@@ -24,18 +23,16 @@ function buildGraph() {
       
       var buildEvent   = {
         "time": eventStart,
-        "eventType": eventType + "Begins",
+        "eventType": eventType,
+        "eventSide": "beginning",
         "minCost": eventMinCost,
         "gasCost": eventGasCost,
-        "supCost": eventSupCost,
-        "cap": 0
+        "supCost": eventSupCost
       };
       var finishEvent  = {
         "time": eventEnd,
-        "eventType": eventType + "Ends",
-        "minCost": 0,
-        "gasCost": 0,
-        "supCost": 0,
+        "eventType": eventType,
+        "eventSide": "end",
         "cap": eventCap
       };
 
@@ -51,6 +48,7 @@ function buildGraph() {
   var minCount = 50;                  //  you start off w/ 50 min
   var gasCount = 0;                   //  ... and 0 gas
   var workerCount = 6;                //  ... and 6 workers
+  var gaserCount = 0;
   var supCount = 6;                   //  ... and 6 consumed supply
   var cap = 11;                       //  ... and 11 supply cap
   var fastMinerRate = 42.5 / 60.0;  //  workers 1  through 16 harvest at 42.5 minerals a minute (/60 for per sec)
@@ -68,24 +66,27 @@ function buildGraph() {
     for (var j = 0; j < eventHistory.length; j ++) {
       if (eventHistory[j].time == i) {
         currentEvent = eventHistory[j];
-
-        minCount = minCount - currentEvent.minCost;
-        gasCount = gasCount - currentEvent.gasCost;
-        supCount = supCount + currentEvent.supCost;
-        cap      = cap      + currentEvent.cap;
-
-        if (currentEvent.eventType == "workerEnds") {
+        if (currentEvent.eventSide == "beginning") {
+          minCount = minCount - currentEvent.minCost;
+          gasCount = gasCount - currentEvent.gasCost;
+          supCount = supCount + currentEvent.supCost;
+        }
+        else {
+          cap      = cap      + currentEvent.cap;
+        }
+        if (currentEvent.eventType == "worker" && currentEvent.eventSide == "end") {
           workerCount = workerCount + 1;
         }
-        if (currentEvent.eventType == "buildingBegins") {
-          workerCount = workerCount - 1;
+        if (currentEvent.eventType.substring(0, 9) == "gasWorker" && currentEvent.eventSide == "beginning") {
+          gaserCount = currentEvent.eventType.split("_")[1];
         }
-        if (currentEvent.eventType == "buildingEnds") {
-          workerCount = workerCount + 1;
+        if (currentEvent.eventType == "building") {
+          workerCount = (currentEvent.eventSide == "beginning") ? workerCount - 1 : workerCount + 1;
         }
       }
     }
-    var minerCount = workerCount;
+
+    var minerCount = workerCount - gaserCount;
     if (i > 6) {
       var efficientMiners   = (minerCount < 16) ? minerCount : 16;
       var inefficientMiners = (minerCount < 16) ? 0 : minerCount - 16;
@@ -95,7 +96,6 @@ function buildGraph() {
     minCount = minCount + minHarvest ;
 
     /* gas calculation credits: http://www.starcraft2-wiki.com/guides/gameplay-guides/gas-matters */
-    gaserCount = 3;
     gasHarvest = gaserCount * .76;
     gasCount = gasCount + gasHarvest;
 

@@ -97,12 +97,23 @@ behavior: {
             var headerDiv = $("<div>", { "class": "ganttview-vtheader" });
             for (var i = 0; i < data.length; i++) {
                 var itemDiv = $("<div>", { "class": "ganttview-vtheader-item", "css": { "height": (cellHeight+1) + "px" }});
-                var selector = $("<select/>");
+                var selector = $("<select>");
                 for (taskName in taskDescription[data[i].name]) {
                   dom_option = $("<option>", { "value": taskName }).html(taskName);
                   selector.append(dom_option);
                 }
-                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].name)).append(selector);
+                var input =$("<input>", {"type": "submit", "value": "Add", "id": "for_row_" + i});
+                input.click(function() {
+                  var newTask = $(this).siblings('select').attr('value');
+                  var rowIndex = $(this).attr('id').replace("for_row_", "");
+                  var lastEventName = _.last(buildOrder[rowIndex].tasks).taskName;
+                  var lastEventStart = _.last(buildOrder[rowIndex].tasks).taskTime;
+                  var lastEventDuration = taskDescription[buildOrder[rowIndex].name][lastEventName][1];
+                  var lastEventEnd = lastEventStart + lastEventDuration;
+                  buildOrder[rowIndex].tasks.push({taskTime: lastEventEnd, taskName: newTask})
+                  ganttTheData();
+                });
+                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].name)).append(selector).append(input);
                 headerDiv.append(itemDiv);
             }
             div.append(headerDiv);
@@ -169,8 +180,8 @@ behavior: {
             var rows = $("div.ganttview-blocks div.ganttview-block-container", div);
             for (var i = 0; i < data.length; i++) { /* for each structure */
               var building = data[i];
-              for (time in building.tasks) {
-                var currentTask = building.tasks[time];
+              for (taskIndex in building.tasks) {
+                var currentTask = building.tasks[taskIndex];
                 var taskDetails = taskDescription[building.name][currentTask.taskName];
                 var type = taskDetails[0];
                 var size = taskDetails[1];
@@ -188,10 +199,22 @@ behavior: {
 
                 return_times = getFriendlyTimes(offset, offset + size);
 
+                var closeButton = $("<div>", { "class": "ganttview-block-close" }).text("x");
+                closeButton.click(function() {
+                  var toRemove = $(this).parent().data("blockId").split("_");
+                  var xBuilding = buildOrder[toRemove[0]];
+                  var xTask = buildOrder[toRemove[0]].tasks[toRemove[1]];
+                  var newBuildingTasks = _.reject(xBuilding.tasks, function(rejTask){
+                    return (rejTask.taskName == xTask.taskName) && (rejTask.taskTime == xTask.taskTime);
+                  });
+                  buildOrder[toRemove[0]].tasks = newBuildingTasks;
+                  ganttTheData();
+                });
+                
                 block.append($("<div>", { "class": "ganttview-block-start" }).text(return_times[0]));
                 block.append($("<div>", { "class": "ganttview-block-end" }).text(return_times[1]));
-                block.append($("<div>", { "class": "ganttview-block-close" }).text("x"));
-                var blockId = i + "_" + time + "_" + currentTask;
+                block.append(closeButton);
+                var blockId = i + "_" + taskIndex;
 
                 block.data("blockId", blockId);
 
@@ -236,23 +259,7 @@ behavior: {
         var newStart = Math.round(offset / cellWidth);
 
         buildOrder[blockBuilding]["tasks"][blockTimeSig].taskTime = newStart;
-        $("#ganttChartDiv").html("");
-        $(function () {
-          $("#ganttChartDiv").ganttView({ 
-            data: buildOrder,
-            start: 0,
-            end: 240,
-            slideWidth: 3000,
-            cellWidth: 4,
-            cellHeight: 40,
-            behavior: {
-              resizable: false,
-              onDrag: function (data) { 
-                  buildGraph();
-              }
-            }
-          });
-        });
+        ganttTheData();
       },
 
     };
@@ -265,6 +272,26 @@ behavior: {
         }
     };
 })(jQuery);
+
+function ganttTheData() {
+  $("#ganttChartDiv").html("");
+  $(function () {
+    $("#ganttChartDiv").ganttView({ 
+      data: buildOrder,
+      start: 0,
+      end: 480,
+      slideWidth: 2175,
+      cellWidth: 4,
+      cellHeight: 40,
+      behavior: {
+        resizable: false,
+        onDrag: function (data) { 
+            buildGraph();
+        }
+      }
+    });
+  });
+}
 
 function getFriendlyTimes(start_time, end_time) {
   var return_times = [];
