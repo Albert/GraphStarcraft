@@ -67,11 +67,11 @@ behavior: {
 
             Chart.addBlockContainers(slideDiv, opts.data, opts.cellHeight);
 
-            console.time("timing slideDiv");
+//            console.time("timing slideDiv");
             Chart.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.cellHeight, opts.start);
-            console.timeEnd("timing slideDiv");
+//            console.timeEnd("timing slideDiv");
 
-        console.time("timing blah");
+//        console.time("timing blah");
             div.append(slideDiv);
             container.append(div);
 
@@ -79,16 +79,16 @@ behavior: {
             container.css("width", (w + 2) + "px");
 
             Chart.applyLastClass(container);
-        console.timeEnd("timing blah");
-        console.time("timing draggable");
+//        console.timeEnd("timing blah");
+//        console.time("timing draggable");
             if (opts.behavior.draggable) { 
             	Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); 
         	}
-        console.timeEnd("timing draggable");
+//        console.timeEnd("timing draggable");
         });
-        console.time("timing graph");
+//        console.time("timing graph");
         buildGraph();
-        console.timeEnd("timing graph");
+//        console.timeEnd("timing graph");
     };
 
     var Chart = {
@@ -203,26 +203,25 @@ behavior: {
         },
 
         addGrid: function (div, data, minutes, cellWidth, cellHeight) {
-            var gridDiv = $("<div>", { "class": "ganttview-grid" });
-            var rowDiv = $("<div>", { "class": "ganttview-grid-row" });
-            for (var i = 0; i < 12; i++) {
-                if (minutes[i] != undefined) {
-                    for (var j = 0; j < 60; j++) {
-                        var cellDiv = $("<div>", { "class": "ganttview-grid-row-cell ", "width" : (cellWidth - 1), "height": cellHeight });
-                        if (j % 10 == 9) {
-                          cellDiv.addClass("darker");
-                        }
-                        rowDiv.append(cellDiv);
-                    }
-                }
+          var w = "width=" + buildOrder.length * cellWidth + "px";
+          var gridDiv = $("<div>", { "class": "ganttview-grid", "css": w });
+          var rowDiv = $("<div>", { "class": "ganttview-grid-row", "css": w });
+          var cellDivs = "";
+          for (i in minutes) {
+            for (var j = 0; j < 60; j++) {
+              var cellClass = "ganttview-grid-row-cell";
+              if (j % 10 == 9) {
+                cellClass = cellClass + " darker";
+              }
+              var cellDiv = "<div class='" + cellClass + "'style='width:" + (cellWidth-1) + "px; height: " + cellHeight + "px;'></div>";
+              cellDivs = cellDivs + cellDiv;
             }
-            var w = $("div.ganttview-grid-row-cell", rowDiv).length * cellWidth;
-            rowDiv.css("width", w + "px");
-            gridDiv.css("width", w + "px");
-            for (var i = 0; i < data.length; i++) {
-                gridDiv.append(rowDiv.clone());
-            }
-            div.append(gridDiv);
+          }
+          rowDiv.append(cellDivs);
+          for (var i = 0; i < data.length; i++) {
+            gridDiv.append(rowDiv.clone());
+          }
+          div.append(gridDiv);
         },
 
         addBlockContainers: function (div, data, cellHeight) {
