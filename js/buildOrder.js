@@ -7,7 +7,30 @@ var buildOrderOther = [
   }
 ]
 
-var buildOrder = [         // Gantt Row #, Building Type, events:
+var buildOrder = [
+  {
+    name: "cc",
+    tasks: [
+      { taskTime: 100, taskName: "scv" }
+    ]
+  },
+  {
+    name: "refinery",
+    tasks: [
+      { taskTime: 10, taskName: "construction" },
+      { taskTime: 40, taskName: 3 }
+    ]
+  },
+  {
+    name: "refinery",
+    tasks: [
+      { taskTime: 100, taskName: "construction" },
+      { taskTime: 130, taskName: 3 }
+    ]
+  }
+]
+
+var buildOrderYetanother = [         // Gantt Row #, Building Type, events:
   {
     name: "cc",
     tasks: [

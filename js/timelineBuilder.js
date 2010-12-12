@@ -20,7 +20,6 @@ function buildGraph() {
       var eventCap        = taskDescription[buildingName][eventName][5];
 
       var eventEnd        = eventStart + eventDuration;
-
       var buildEvent   = {
         "buildingIndex": building,
         "time": eventStart,
@@ -85,7 +84,7 @@ function buildGraph() {
           workerCount = workerCount + 1;
         }
         if (currentEvent.eventType.substring(0, 9) == "gasWorker" && currentEvent.eventSide == "beginning") {
-          refineryGasers[building] = parseInt(currentEvent.eventType.split("_")[1]);
+          refineryGasers[currentEvent.buildingIndex] = parseInt(currentEvent.eventType.split("_")[1]);
         }
         if (currentEvent.eventType == "building") {
           workerCount = (currentEvent.eventSide == "beginning") ? workerCount - 1 : workerCount + 1;
@@ -105,10 +104,19 @@ function buildGraph() {
     minCount = minCount + minHarvest ;
 
     /* gas calculation credits: http://www.starcraft2-wiki.com/guides/gameplay-guides/gas-matters */
+    var efficientGasers = 0;
+    var slowGasers = 0;
+
     for (refinery in refineryGasers) {
       var gasersForRefinery = refineryGasers[refinery];
+      if (gasersForRefinery > 0) {
+        var efficientGasersForRefinery   = (gasersForRefinery < 3) ? gasersForRefinery : 2;
+        var slowGasersForRefinery        = (gasersForRefinery >= 3) ? 1: 0;
+        efficientGasers = efficientGasers + efficientGasersForRefinery;
+        slowGasers = slowGasers + slowGasersForRefinery;
+      }
     }
-    gasHarvest = gaserCount * .76;
+    gasHarvest = efficientGasers * fastGaserRate + slowGasers * slowGaserRate;
     gasCount = gasCount + gasHarvest;
 
     var minPoint = [];
