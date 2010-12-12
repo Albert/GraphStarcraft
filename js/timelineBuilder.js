@@ -49,10 +49,12 @@ function buildGraph() {
   var gasCount = 0;                   //  ... and 0 gas
   var workerCount = 6;                //  ... and 6 workers
   var gaserCount = 0;
+  var muleCount = 0;
   var supCount = 6;                   //  ... and 6 consumed supply
   var cap = 11;                       //  ... and 11 supply cap
   var fastMinerRate = 42.5 / 60.0;  //  workers 1  through 16 harvest at 42.5 minerals a minute (/60 for per sec)
   var slowMinerRate = 16.0 / 60.0;  //  workers 17 through 24 harvest at 16.0 minerals a minute (/60 for per sec)
+  var muleMinerRate = 170.0 / 90.0;   //  apparently mules live 90 seconds and gather anywhere from 160 to 180 (http://wiki.teamliquid.net/starcraft2/MULE)
   var fastGaserRate = .75           //  workers 1 and 2 pull in .75 gas per second
   var slowGaserRate = .50           //  workers 1 and 2 pull in .75 gas per second
   var minPoints = [];
@@ -84,7 +86,14 @@ function buildGraph() {
           workerCount = workerCount + 1;
         }
         if (currentEvent.eventType.substring(0, 9) == "gasWorker" && currentEvent.eventSide == "beginning") {
-          refineryGasers[currentEvent.buildingIndex] = parseInt(currentEvent.eventType.split("_")[1]);
+          refineryGasers[building] = parseInt(currentEvent.eventType.split("_")[1]);
+        }
+        if (currentEvent.eventType == "mule") {
+          if (currentEvent.eventSide == "beginning") {
+            muleCount = muleCount + 1;
+          } else {
+            muleCount = muleCount - 1;
+          }
         }
         if (currentEvent.eventType == "building") {
           workerCount = (currentEvent.eventSide == "beginning") ? workerCount - 1 : workerCount + 1;
@@ -101,6 +110,7 @@ function buildGraph() {
       var slowMiners        = (inefficientMiners > 8) ? 8 : inefficientMiners;
       minHarvest = (efficientMiners * fastMinerRate) + (slowMiners * slowMinerRate);
     }
+    minHarvest = minHarvest + muleMinerRate * muleCount;
     minCount = minCount + minHarvest ;
 
     /* gas calculation credits: http://www.starcraft2-wiki.com/guides/gameplay-guides/gas-matters */

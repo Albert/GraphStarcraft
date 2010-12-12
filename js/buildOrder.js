@@ -1,15 +1,15 @@
 var buildOrderOther = [
   {
-    name: "cc",
+    name: "command_center",
     tasks: [
       { taskTime:   0, taskName: "scv" }
     ]
   }
 ]
 
-var buildOrder = [
+var buildOrderyetanother = [
   {
-    name: "cc",
+    name: "command_center",
     tasks: [
       { taskTime: 100, taskName: "scv" }
     ]
@@ -30,9 +30,9 @@ var buildOrder = [
   }
 ]
 
-var buildOrderYetanother = [         // Gantt Row #, Building Type, events:
+var buildOrder = [         // Gantt Row #, Building Type, events:
   {
-    name: "cc",
+    name: "command_center",
     tasks: [
       { taskTime:   0, taskName: "scv" },
       { taskTime:  17, taskName: "scv" },

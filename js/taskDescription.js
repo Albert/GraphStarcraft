@@ -1,9 +1,17 @@
 taskDescription = {       // BuildingTypes, tasks (type, time, minerals, gas, supply)
-  cc: {
+  command_center: {
     construction:         ["building",  100, 400,   0, 0, 11],
     scv:                  ["worker",     17,  50,   0, 1,  0],
     orbital:              ["addon",      35, 150,   0, 0,  0],
     planetary:            ["addon",      50, 150, 150, 0,  0]
+  },
+  orbital: {
+    mule:                 ["mule",       88,   0,   0, 0,  0],
+    extra_supplies:       ["spell",      88,   0,   0, 0,  8],
+    scan:                 ["spell",      88,   0,   0, 0,  0],
+  },
+  planetary: {
+    look_mean_like_a_boss:["spell",       0,   0,   0, 0,  0],
   },
   depot: {
     construction:         ["building",   30, 100,   0, 0,  8]
@@ -54,9 +62,28 @@ taskDescription = {       // BuildingTypes, tasks (type, time, minerals, gas, su
     viking:               ["unit",       42, 150,  75, 2,  0],
     medivac:              ["unit",       42, 100, 100, 2,  0]
   },
+  ghost_academy: {
+    construction:         ["building", 40, 150, 50, 0, 0]
+  },
+  fusion_core: {
+    construction:         ["building", 65, 150, 150, 0, 0]
+  },
   engineering: {
     construction:         ["building", 60, 150, 0, 0, 0],
     weapons1:             ["tech", 60, 150, 0, 0, 0],
     armor1:               ["tech", 60, 150, 0, 0, 0]
+  },
+  armory: {
+    construction:         ["building", 60, 150, 100, 0, 0]
+  },
+  bunker: {
+    construction:         ["building", 35, 100, 0, 0, 0],
+    salvage:              ["spell",     5, -100, 0, 0, 0] // TODO - fix to that salvage awards money at end of salvaging
+  },
+  turret: {
+    construction:         ["building", 25, 100, 0, 0, 0]
+  },
+  sensor_tower: {
+    construction:         ["building", 25, 125, 100, 0, 0]
   }
 };

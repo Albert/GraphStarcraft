@@ -112,14 +112,23 @@ behavior: {
                 input.click(function() {
                   var newTask = $(this).siblings('select').attr('value');
                   var rowIndex = $(this).attr('id').replace("for_row_", "");
+                  var taskType = taskDescription[buildOrder[rowIndex].name][newTask][0];
+
                   var lastEventEnd = 0;
                   if (buildOrder[rowIndex].tasks.length > 0) {
                     var lastEventName = _.max(buildOrder[rowIndex].tasks, function(task){return task.taskTime}).taskName;
                     var lastEventStart = _.max(buildOrder[rowIndex].tasks, function(task){return task.taskTime}).taskTime;
                     var lastEventDuration = taskDescription[buildOrder[rowIndex].name][lastEventName][1];
-                    var lastEventEnd = lastEventStart + lastEventDuration;
+                    lastEventEnd = lastEventStart + lastEventDuration;
                   }
                   buildOrder[rowIndex].tasks.push({taskTime: lastEventEnd, taskName: newTask})
+
+                  if (taskType == "addon") {
+                    var newBuildingName = newTask;
+                    var newBuildingObj = { name: newBuildingName, tasks: [] }
+                    buildOrder.splice(rowIndex + 1, 0, newBuildingObj);
+                  }
+                    
                   ganttTheData();
                 });
                 var closeButton = $("<div>", { "class": "ganttview-vtheader-item-close" }).text("x");
@@ -151,7 +160,6 @@ behavior: {
             var newBuildingName = $(this).siblings('select').attr("value");
             var newBuildingObj = { name: newBuildingName, tasks: [] }
             buildOrder.push(newBuildingObj);
-            console.log(buildOrder);
             ganttTheData();
           });
           buildingAdder.append(buildingAdderOption).append(buildingAdderInput);
