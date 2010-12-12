@@ -60,12 +60,18 @@ behavior: {
                 "class": "ganttview-slide-container",
                 "css": { "width": opts.slideWidth + "px" }
             });
-
             Chart.addHzHeader(slideDiv, minutes, opts.cellWidth);
+            console.time("timing grid");
             Chart.addGrid(slideDiv, opts.data, minutes, opts.cellWidth, opts.cellHeight);
-            Chart.addBlockContainers(slideDiv, opts.data, opts.cellHeight);
-            Chart.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.cellHeight, opts.start);
+            console.timeEnd("timing grid");
 
+            Chart.addBlockContainers(slideDiv, opts.data, opts.cellHeight);
+
+            console.time("timing slideDiv");
+            Chart.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.cellHeight, opts.start);
+            console.timeEnd("timing slideDiv");
+
+        console.time("timing blah");
             div.append(slideDiv);
             container.append(div);
 
@@ -73,12 +79,16 @@ behavior: {
             container.css("width", (w + 2) + "px");
 
             Chart.applyLastClass(container);
-            
+        console.timeEnd("timing blah");
+        console.time("timing draggable");
             if (opts.behavior.draggable) { 
             	Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); 
         	}
+        console.timeEnd("timing draggable");
         });
+        console.time("timing graph");
         buildGraph();
+        console.timeEnd("timing graph");
     };
 
     var Chart = {
@@ -98,9 +108,9 @@ behavior: {
             for (var i = 0; i < data.length; i++) {
                 var itemDiv = $("<div>", { "class": "ganttview-vtheader-item", "css": { "height": (cellHeight+1) + "px" }});
                 var selector = $("<select>");
-
+                var lastTask = {};
                 if (buildOrder[i].tasks.length > 0) {
-                  var lastTask = _.max(buildOrder[i].tasks, function(task){return task.taskTime});
+                  lastTask = _.max(buildOrder[i].tasks, function(task){return task.taskTime});
                 }
 
                 for (taskName in taskDescription[data[i].name]) {

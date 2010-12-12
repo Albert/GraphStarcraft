@@ -154,3 +154,13 @@ js/timelineBuilder
 
 
 **make supply depots transparent
+
+
+
+Benchmarks:
+
+timing grid: 587ms        ganttBuilder.js (line 66)
+timing slideDiv: 262ms    ganttBuilder.js (line 72)
+timing blah: 864ms        ganttBuilder.js (line 82)
+timing draggable: 275ms   ganttBuilder.js (line 87)
+timing graph: 786ms       ganttBuilder.js (line 91)
