@@ -20,8 +20,9 @@ function buildGraph() {
       var eventCap        = taskDescription[buildingName][eventName][5];
 
       var eventEnd        = eventStart + eventDuration;
-      
+
       var buildEvent   = {
+        "buildingIndex": building,
         "time": eventStart,
         "eventType": eventType,
         "eventSide": "beginning",
@@ -53,6 +54,8 @@ function buildGraph() {
   var cap = 11;                       //  ... and 11 supply cap
   var fastMinerRate = 42.5 / 60.0;  //  workers 1  through 16 harvest at 42.5 minerals a minute (/60 for per sec)
   var slowMinerRate = 16.0 / 60.0;  //  workers 17 through 24 harvest at 16.0 minerals a minute (/60 for per sec)
+  var fastGaserRate = .75           //  workers 1 and 2 pull in .75 gas per second
+  var slowGaserRate = .50           //  workers 1 and 2 pull in .75 gas per second
   var minPoints = [];
   var gasPoints = [];
   var supPoints = [];
@@ -61,6 +64,10 @@ function buildGraph() {
   var maxMinCount = 0;
   var minHarvest  = 0;
   var gasHarvest  = 0;
+  var refineryGasers = [];
+  for (building in buildOrder) {
+    refineryGasers.push(0);
+  }
 
   for (var i = 0; i < latestEvent; i++) {
     for (var j = 0; j < eventHistory.length; j ++) {
@@ -78,13 +85,15 @@ function buildGraph() {
           workerCount = workerCount + 1;
         }
         if (currentEvent.eventType.substring(0, 9) == "gasWorker" && currentEvent.eventSide == "beginning") {
-          gaserCount = currentEvent.eventType.split("_")[1];
+          refineryGasers[building] = parseInt(currentEvent.eventType.split("_")[1]);
         }
         if (currentEvent.eventType == "building") {
           workerCount = (currentEvent.eventSide == "beginning") ? workerCount - 1 : workerCount + 1;
         }
       }
     }
+    
+    gaserCount = _.reduce(refineryGasers, function(initial, num) {return initial + num}, 0);
 
     var minerCount = workerCount - gaserCount;
     if (i > 6) {
@@ -96,6 +105,9 @@ function buildGraph() {
     minCount = minCount + minHarvest ;
 
     /* gas calculation credits: http://www.starcraft2-wiki.com/guides/gameplay-guides/gas-matters */
+    for (refinery in refineryGasers) {
+      var gasersForRefinery = refineryGasers[refinery];
+    }
     gasHarvest = gaserCount * .76;
     gasCount = gasCount + gasHarvest;
 

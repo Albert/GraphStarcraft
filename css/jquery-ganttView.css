@@ -27,6 +27,7 @@ div.ganttview-hzheader-minute.last {
 
 div.ganttview {
 	border: 1px solid #999;
+	position: relative;
 }
 
 
@@ -60,6 +61,7 @@ div.ganttview-vtheader {
 div.ganttview-vtheader-item {
 	overflow: hidden;
 	color: #666;
+	position: relative;
 }
 
 div.ganttview-vtheader-item-name {
@@ -69,14 +71,23 @@ div.ganttview-vtheader-item-name {
 	line-height: 16px;
 }
 
-div.ganttview-vtheader-series-name {
-	width: 130px;
-	height: 31px;
-	border-top: 1px solid #d0d0d0;
-	line-height: 16px;
-	padding-left: 5px;
+div.ganttview-vtheader-item-close {
+  position: absolute;
+  top: 3px;
+  right: 6px;
+  color: #999;
+  font-size: .6em;
 }
 
+div.ganttview-vtheader-item-close:hover { text-decoration: underline; cursor: pointer; }
+
+/* building adder */
+
+#building_adder {
+  position: absolute;
+  left: 0;
+  bottom: -30px;
+}
 
 /* Slider */
 

@@ -1,3 +1,12 @@
+var buildOrderOther = [
+  {
+    name: "cc",
+    tasks: [
+      { taskTime:   0, taskName: "scv" }
+    ]
+  }
+]
+
 var buildOrder = [         // Gantt Row #, Building Type, events:
   {
     name: "cc",

@@ -54,6 +54,7 @@ behavior: {
             var div = $("<div>", { "class": "ganttview" });
 
             Chart.addVtHeader(div, opts.data, opts.cellHeight);
+            Chart.addBuildingAdder(div);
 
             var slideDiv = $("<div>", {
                 "class": "ganttview-slide-container",
@@ -68,8 +69,7 @@ behavior: {
             div.append(slideDiv);
             container.append(div);
 
-            var w = $("div.ganttview-vtheader", container).outerWidth() +
-				$("div.ganttview-slide-container", container).outerWidth();
+            var w = $("div.ganttview-vtheader", container).outerWidth() +	$("div.ganttview-slide-container", container).outerWidth();
             container.css("width", (w + 2) + "px");
 
             Chart.applyLastClass(container);
@@ -98,25 +98,64 @@ behavior: {
             for (var i = 0; i < data.length; i++) {
                 var itemDiv = $("<div>", { "class": "ganttview-vtheader-item", "css": { "height": (cellHeight+1) + "px" }});
                 var selector = $("<select>");
+
+                if (buildOrder[i].tasks.length > 0) {
+                  var lastTask = _.max(buildOrder[i].tasks, function(task){return task.taskTime});
+                }
+
                 for (taskName in taskDescription[data[i].name]) {
-                  dom_option = $("<option>", { "value": taskName }).html(taskName);
+                  var isSelected = (lastTask.taskName == taskName ) ? "selected" : "";
+                  dom_option = $("<option>", { "value": taskName, "selected": isSelected }).html(taskName);
                   selector.append(dom_option);
                 }
                 var input =$("<input>", {"type": "submit", "value": "Add", "id": "for_row_" + i});
                 input.click(function() {
                   var newTask = $(this).siblings('select').attr('value');
                   var rowIndex = $(this).attr('id').replace("for_row_", "");
-                  var lastEventName = _.last(buildOrder[rowIndex].tasks).taskName;
-                  var lastEventStart = _.last(buildOrder[rowIndex].tasks).taskTime;
-                  var lastEventDuration = taskDescription[buildOrder[rowIndex].name][lastEventName][1];
-                  var lastEventEnd = lastEventStart + lastEventDuration;
+                  var lastEventEnd = 0;
+                  if (buildOrder[rowIndex].tasks.length > 0) {
+                    var lastEventName = _.max(buildOrder[rowIndex].tasks, function(task){return task.taskTime}).taskName;
+                    var lastEventStart = _.max(buildOrder[rowIndex].tasks, function(task){return task.taskTime}).taskTime;
+                    var lastEventDuration = taskDescription[buildOrder[rowIndex].name][lastEventName][1];
+                    var lastEventEnd = lastEventStart + lastEventDuration;
+                  }
                   buildOrder[rowIndex].tasks.push({taskTime: lastEventEnd, taskName: newTask})
                   ganttTheData();
                 });
-                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].name)).append(selector).append(input);
+                var closeButton = $("<div>", { "class": "ganttview-vtheader-item-close" }).text("x");
+
+                closeButton.click(function() {
+                  var toRemove = $(this).parent().data("vtHeaderId");
+                  delete buildOrder[toRemove];
+                  buildOrder = _.compact(buildOrder)
+                  ganttTheData();
+                });
+
+                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].name)).append(selector).append(input).append(closeButton);
+                var vtHeaderId = i;
+                itemDiv.data("vtHeaderId", vtHeaderId);
                 headerDiv.append(itemDiv);
             }
             div.append(headerDiv);
+        },
+        
+        addBuildingAdder: function(div) {
+          var buildingAdder = $('<div>', {"id": "building_adder"});
+          var buildingAdderOption = $("<select>");
+          for (building in taskDescription) {
+            var buildingOption = $("<option>", {"value": building }).html(building);
+            buildingAdderOption.append(buildingOption);
+          }
+          var buildingAdderInput =$("<input>", {"type": "submit", "value": "Add"});
+          buildingAdderInput.click(function() {
+            var newBuildingName = $(this).siblings('select').attr("value");
+            var newBuildingObj = { name: newBuildingName, tasks: [] }
+            buildOrder.push(newBuildingObj);
+            console.log(buildOrder);
+            ganttTheData();
+          });
+          buildingAdder.append(buildingAdderOption).append(buildingAdderInput);
+          div.append(buildingAdder);
         },
 
         addHzHeader: function (div, minutes, cellWidth) {
@@ -275,6 +314,7 @@ behavior: {
 
 function ganttTheData() {
   $("#ganttChartDiv").html("");
+  
   $(function () {
     $("#ganttChartDiv").ganttView({ 
       data: buildOrder,
