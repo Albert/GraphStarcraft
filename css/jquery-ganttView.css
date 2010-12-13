@@ -71,15 +71,38 @@ div.ganttview-vtheader-item-name {
 	line-height: 16px;
 }
 
-div.ganttview-vtheader-item-close {
+div.ganttview-vtheader-item-close,
+div.control_pad .building_mover {
   position: absolute;
-  top: 3px;
-  right: 6px;
-  color: #999;
-  font-size: .6em;
+  display: block;
+  width: 16px;
+  height: 16px;
+  text-indent: -9999em;
+  background-image: url("../images/ui-icons_222222_256x240.png");
+  cursor: pointer;
 }
 
-div.ganttview-vtheader-item-close:hover { text-decoration: underline; cursor: pointer; }
+div.ganttview-vtheader-item-close {
+  top: 0;
+  right: 0;
+}
+
+div.control_pad .building_mover.up {
+  top: 4px;
+  right: 16px;
+}
+
+div.control_pad .building_mover.down {
+  top: 20px;
+  right: 16px;
+}
+
+div.ganttview-vtheader-item-close           { background-position: -32px -208px; top:    0; right:    0; }
+div.ganttview-vtheader-item-close:hover     { background-position: -80px -208px; }
+div.control_pad .building_mover.up          { background-position:     0      0; top:  4px; right: 16px; }
+div.control_pad .building_mover.up:hover    { background-position:     0  -16px; }
+div.control_pad .building_mover.down        { background-position: -65px      0; top: 20px; right: 16px; }
+div.control_pad .building_mover.down:hover  { background-position: -65px  -16px; }
 
 /* building adder */
 
@@ -87,6 +110,15 @@ div.ganttview-vtheader-item-close:hover { text-decoration: underline; cursor: po
   position: absolute;
   left: 0;
   bottom: -30px;
+}
+
+/* building adder */
+
+#buildOrderSaverLoaderContainer {
+  position: absolute;
+  left: 0;
+  bottom: -175px;
+  width: 200px;
 }
 
 /* Slider */

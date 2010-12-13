@@ -47,6 +47,7 @@ behavior: {
 
             Chart.addVtHeader(div, opts.data, opts.cellHeight);
             Chart.addBuildingAdder(div);
+            Chart.addSaverLoader(div);
 
             var slideDiv = $("<div>", {
                 "class": "ganttview-slide-container",
@@ -98,7 +99,7 @@ behavior: {
                   dom_option = $("<option>", { "value": taskName, "selected": isSelected }).html(taskName);
                   selector.append(dom_option);
                 }
-                var input =$("<input>", {"type": "submit", "value": "Add", "id": "for_row_" + i});
+                var input =$("<input>", {"type": "submit", "value": "Add >", "id": "for_row_" + i});
                 input.click(function() {
                   var newTask = $(this).siblings('select').attr('value');
                   var rowIndex = parseInt($(this).attr('id').replace("for_row_", ""));
@@ -121,6 +122,12 @@ behavior: {
                     
                   ganttTheData();
                 });
+                var controlPad = $('<div class="control_pad">');
+                var moveUp   = '<span class="building_mover up">Move Up</span>';
+                var moveDown = '<span class="building_mover down">Move Down</span>';
+                if (i != 0)                     { controlPad.append(moveUp); }
+                if (i != buildOrder.length - 1) { controlPad.append(moveDown); }
+
                 var closeButton = $("<div>", { "class": "ganttview-vtheader-item-close" }).text("x");
 
                 closeButton.click(function() {
@@ -130,7 +137,7 @@ behavior: {
                   ganttTheData();
                 });
 
-                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].name)).append(selector).append(input).append(closeButton);
+                itemDiv.append($("<div>", { "class": "ganttview-vtheader-item-name"}).append(data[i].name)).append(selector).append(input).append(closeButton).append(controlPad);
                 var vtHeaderId = i;
                 itemDiv.data("vtHeaderId", vtHeaderId);
                 headerDiv.append(itemDiv);
@@ -145,7 +152,7 @@ behavior: {
             var buildingOption = $("<option>", {"value": building }).html(building);
             buildingAdderOption.append(buildingOption);
           }
-          var buildingAdderInput =$("<input>", {"type": "submit", "value": "Add"});
+          var buildingAdderInput =$("<input>", {"type": "submit", "value": "Add ^"});
           buildingAdderInput.click(function() {
             var newBuildingName = $(this).siblings('select').attr("value");
             var newBuildingObj = { name: newBuildingName, tasks: [] }
@@ -154,6 +161,33 @@ behavior: {
           });
           buildingAdder.append(buildingAdderOption).append(buildingAdderInput);
           div.append(buildingAdder);
+        },
+
+        addSaverLoader: function(div) {
+          var saverLoaderContainer = $('<div id="buildOrderSaverLoaderContainer">');
+          var saver = "<textarea type='text' id='buildOrderSaverLoader' />";
+
+          var getterInput = $("<input>", {"type": "submit", "value": "Get Build Order", "id": "get_build_order"});
+          getterInput.click(function() {
+            $("#buildOrderSaverLoader").html(JSON.stringify(buildOrder));
+          });
+
+          var setterInput = $("<input>", {"type": "submit", "value": "Load Build Order", "id": "load_build_order"});
+          setterInput.click(function() {
+            buildOrder = JSON.parse($("#buildOrderSaverLoader").val());
+            ganttTheData();
+          });
+
+          var exampleInput = $("<input>", {"type": "submit", "value": "Example Build Order", "id": "load_build_order"});
+          exampleInput.click(function() {
+            buildOrder = exampleBuildOrder;
+            ganttTheData();
+          });
+          
+          saverLoaderContainer.append(saver).append(getterInput).append(setterInput).append(exampleInput);
+          div.append(saverLoaderContainer);
+                    console.log(saverLoaderContainer);
+
         },
 
         addHzHeader: function (div, minutes, cellWidth) {
@@ -346,3 +380,15 @@ function getFriendlyTimes(start_time, end_time) {
       });
    };
 })(jQuery);
+
+$(".building_mover").live('click', function() {
+  var $this = $(this);
+  var moveModifier = ($this.hasClass('up')) ? -1 : 1;
+  var minimum = 0;
+  var maximum = buildOrder.length - 1;
+  var oldId = parseInt($this.parent().parent().data("vtHeaderId"));
+  var buildingInfo = buildOrder[oldId];
+  buildOrder.splice(oldId, 1);
+  buildOrder.splice((oldId + moveModifier), 0, buildingInfo);
+  ganttTheData();
+});
