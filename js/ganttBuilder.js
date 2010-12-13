@@ -186,7 +186,6 @@ behavior: {
           
           saverLoaderContainer.append(saver).append(getterInput).append(setterInput).append(exampleInput);
           div.append(saverLoaderContainer);
-                    console.log(saverLoaderContainer);
 
         },
 
