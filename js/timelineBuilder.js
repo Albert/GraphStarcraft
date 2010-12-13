@@ -57,6 +57,10 @@ function buildGraph() {
   var muleMinerRate = 170.0 / 90.0;   //  apparently mules live 90 seconds and gather anywhere from 160 to 180 (http://wiki.teamliquid.net/starcraft2/MULE)
   var fastGaserRate = .75           //  workers 1 and 2 pull in .75 gas per second
   var slowGaserRate = .50           //  workers 1 and 2 pull in .75 gas per second
+  var lastMinCount = 0;
+  var lastGasCount = 0;
+  var lastSupCount = 0;
+  var lastCapCount = 0;
   var minPoints = [];
   var gasPoints = [];
   var supPoints = [];
@@ -71,6 +75,20 @@ function buildGraph() {
   }
 
   for (var i = 0; i < latestEvent; i++) {
+    var notableMin = false;
+    var notableGas = false;
+    var notableSup = false;
+    var notableCap = false;
+
+    if (i == 6) {notableMin = true;}
+    if (i == 0) {notableCap = true;}
+    if (i == latestEvent - 1) {
+      notableMin = true;
+      notableGas = true;
+      notableSup = true;
+      notableCap = true;
+    }
+
     for (var j = 0; j < eventHistory.length; j ++) {
       if (eventHistory[j].time == i) {
         currentEvent = eventHistory[j];
@@ -78,29 +96,39 @@ function buildGraph() {
           minCount = minCount - currentEvent.minCost;
           gasCount = gasCount - currentEvent.gasCost;
           supCount = supCount + currentEvent.supCost;
+          if (!currentEvent.minCost == 0) {notableMin = true;}
+          if (!currentEvent.gasCost == 0) {notableGas = true;}
+          if (!currentEvent.supCost == 0) {notableSup = true;}
         }
         else {
           cap      = cap      + currentEvent.cap;
+          if (!currentEvent.cap == 0) {notableCap = true;}
         }
         if (currentEvent.eventType == "worker" && currentEvent.eventSide == "end") {
           workerCount = workerCount + 1;
+          notableMin = true;
         }
         if (currentEvent.eventType.substring(0, 9) == "gasWorker" && currentEvent.eventSide == "beginning") {
           refineryGasers[currentEvent.buildingIndex] = parseInt(currentEvent.eventType.split("_")[1]);
+          notableMin = true;
+          notableGas = true;
         }
         if (currentEvent.eventType == "mule") {
           if (currentEvent.eventSide == "beginning") {
             muleCount = muleCount + 1;
+            notableMin = true;
           } else {
             muleCount = muleCount - 1;
+            notableMin = true;
           }
         }
         if (currentEvent.eventType == "building") {
           workerCount = (currentEvent.eventSide == "beginning") ? workerCount - 1 : workerCount + 1;
+          notableMin = true;
         }
       }
     }
-    
+
     gaserCount = _.reduce(refineryGasers, function(initial, num) {return initial + num}, 0);
 
     var minerCount = workerCount - gaserCount;
@@ -129,26 +157,16 @@ function buildGraph() {
     gasHarvest = efficientGasers * fastGaserRate + slowGasers * slowGaserRate;
     gasCount = gasCount + gasHarvest;
 
-    var minPoint = [];
-    minPoint[0] = i;
-    minPoint[1] = minCount;
-    minPoints.push(minPoint);
-    
-    var gasPoint = [];
-    gasPoint[0] = i;
-    gasPoint[1] = gasCount;
-    gasPoints.push(gasPoint);
-    
-    var supPoint = [];
-    supPoint[0] = i;
-    supPoint[1] = supCount;
-    supPoints.push(supCount);
-    
-    var capPoint = [];
-    capPoint[0] = i;
-    capPoint[1] = cap;
-    capPoints.push(cap);
-    
+    if (notableMin) { minPoints.push([i-1,   lastMinCount]); minPoints.push([i, minCount]); }
+    if (notableGas) { gasPoints.push([i-1,   lastGasCount]); gasPoints.push([i, gasCount]); }
+    if (notableSup) { supPoints.push([i-0.1, lastSupCount]); supPoints.push([i, supCount]); }
+    if (notableCap) { capPoints.push([i-0.1, lastCapCount]); capPoints.push([i, cap     ]); }
+
+    lastMinCount = minCount;
+    lastGasCount = gasCount;
+    lastSupCount = supCount;
+    lastCapCount = cap;
+
     dataPoints = [minPoints, gasPoints, supPoints, capPoints]
     if (maxMinCount < minCount) {
       maxMinCount = minCount;

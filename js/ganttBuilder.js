@@ -34,15 +34,7 @@ behavior: {
             cellWidth: 21,
             cellHeight: 31,
             slideWidth: 400,
-            vHeaderWidth: 100,
-            behavior: {
-            	clickable: true,
-            	draggable: true,
-            	resizable: true,
-            	onClick: null,
-            	onDrag: null,
-            	onResize: null
-            }
+            vHeaderWidth: 100
         };
         
         var opts = $.extend(true, defaults, options);
@@ -61,34 +53,22 @@ behavior: {
                 "css": { "width": opts.slideWidth + "px" }
             });
             Chart.addHzHeader(slideDiv, minutes, opts.cellWidth);
-            console.time("timing grid");
             Chart.addGrid(slideDiv, opts.data, minutes, opts.cellWidth, opts.cellHeight);
-            console.timeEnd("timing grid");
 
             Chart.addBlockContainers(slideDiv, opts.data, opts.cellHeight);
 
-//            console.time("timing slideDiv");
             Chart.addBlocks(slideDiv, opts.data, opts.cellWidth, opts.cellHeight, opts.start);
-//            console.timeEnd("timing slideDiv");
 
-//        console.time("timing blah");
             div.append(slideDiv);
-            container.append(div);
+            container.html(div);
 
             var w = $("div.ganttview-vtheader", container).outerWidth() +	$("div.ganttview-slide-container", container).outerWidth();
             container.css("width", (w + 2) + "px");
 
             Chart.applyLastClass(container);
-//        console.timeEnd("timing blah");
-//        console.time("timing draggable");
-            if (opts.behavior.draggable) { 
-            	Behavior.bindBlockDrag(container, opts.cellWidth, opts.start, opts.behavior.onDrag); 
-        	}
-//        console.timeEnd("timing draggable");
+        	Behavior.bindBlockDrag(container, opts.cellWidth, opts.start); 
         });
-//        console.time("timing graph");
         buildGraph();
-//        console.timeEnd("timing graph");
     };
 
     var Chart = {
@@ -289,7 +269,7 @@ behavior: {
 
     var Behavior = {
       
-      bindBlockDrag: function (div, cellWidth, startDate, callback) {
+      bindBlockDrag: function (div, cellWidth, startDate) {
       	$("div.ganttview-block", div).draggable({
       		axis: "x", 
       		grid: [cellWidth, cellWidth],
@@ -305,7 +285,6 @@ behavior: {
         var blockIdComponents = blockId.split("_");
         var blockBuilding = blockIdComponents[0];
         var blockTimeSig  = blockIdComponents[1];
-        var blockTaskName = blockIdComponents[2];
 
         var container = $("div.ganttview-slide-container", div);
         var scroll = container.scrollLeft();
@@ -320,13 +299,6 @@ behavior: {
 
     };
 
-    var ArrayUtils = {
-        contains: function (arr, obj) {
-            var has = false;
-            for (var i = 0; i < arr.length; i++) { if (arr[i] == obj) { has = true; } }
-            return has;
-        }
-    };
 })(jQuery);
 
 function ganttTheData() {
@@ -339,13 +311,7 @@ function ganttTheData() {
       end: 480,
       slideWidth: 2175,
       cellWidth: 4,
-      cellHeight: 40,
-      behavior: {
-        resizable: false,
-        onDrag: function (data) { 
-            buildGraph();
-        }
-      }
+      cellHeight: 40
     });
   });
 }
