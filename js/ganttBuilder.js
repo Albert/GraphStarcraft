@@ -270,7 +270,7 @@ behavior: {
     var Behavior = {
       
       bindBlockDrag: function (div, cellWidth, startDate) {
-      	$("div.ganttview-block", div).draggable({
+      	$("div.ganttview-block", div).liveDraggable({
       		axis: "x", 
       		grid: [cellWidth, cellWidth],
       		stop: function () {
@@ -336,3 +336,13 @@ function getFriendlyTimes(start_time, end_time) {
   
   return return_times;
 }
+
+(function ($) {
+   jQuery.fn.liveDraggable = function (opts) {
+      this.live("mouseover", function() {
+         if (!$(this).data("init")) {
+            $(this).data("init", true).draggable(opts);
+         }
+      });
+   };
+})(jQuery);
