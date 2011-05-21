@@ -109,7 +109,7 @@ div.control_pad .building_mover.down:hover  { background-position: -65px  -16px;
 #building_adder {
   position: absolute;
   left: 0;
-  bottom: -30px;
+  top: 15px;
 }
 
 /* building adder */

@@ -28,6 +28,7 @@ taskDescription = {       // BuildingTypes, tasks (type, time, minerals, gas, su
     marine:               ["unit",       25,  50,   0, 1,  0],
     maurader:             ["unit",       30, 100,  25, 2,  0],
     reaper:               ["unit",       45,  50,  50, 1,  0],
+    ghost:                ["unit",       40, 200, 100, 2,  0],
     reactor:              ["addon",      50,  50,  50, 0,  0],
     tech:                 ["addon",      25,  50,  25, 0,  0]
   },
@@ -81,7 +82,7 @@ taskDescription = {       // BuildingTypes, tasks (type, time, minerals, gas, su
     weapon_refit:         ["tech",     60, 150, 150, 0, 0]
   },
   engineering: {
-    construction:         ["building", 60, 150, 0, 0, 0],
+    construction:         ["building", 35, 125, 0, 0, 0],
     infantry_weapons1:    ["tech", 160, 100, 100, 0, 0],
     infantry_weapons2:    ["tech", 190, 175, 175, 0, 0],
     infantry_weapons3:    ["tech", 220, 250, 250, 0, 0],
@@ -93,7 +94,7 @@ taskDescription = {       // BuildingTypes, tasks (type, time, minerals, gas, su
     neosteel_frame:       ["tech", 110, 100, 100, 0, 0]
   },
   armory: {
-    construction:         ["building", 60, 150, 100, 0, 0],
+    construction:         ["building", 65, 150, 100, 0, 0],
     vehicle_weapons1:     ["tech", 160, 100, 100, 0, 0],
     vehicle_weapons2:     ["tech", 190, 175, 175, 0, 0],
     vehicle_weapons3:     ["tech", 220, 250, 250, 0, 0],
@@ -108,8 +109,8 @@ taskDescription = {       // BuildingTypes, tasks (type, time, minerals, gas, su
     ship_plating3:        ["tech", 220, 250, 250, 0, 0]
   },
   bunker: {
-    construction:         ["building", 35, 100, 0, 0, 0],
-    salvage:              ["spell",     5, -100, 0, 0, 0] // TODO - fix to that salvage awards money at end of salvaging
+    construction:         ["building", 40, 100, 0, 0, 0],
+    salvage:              ["spell",     5, -75, 0, 0, 0] // TODO - fix to that salvage awards money at end of salvaging
   },
   turret: {
     construction:         ["building", 25, 100, 0, 0, 0]

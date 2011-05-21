@@ -12,10 +12,30 @@
   <title>GraphStarcraft</title>
 </head>
 <body>
+  <div id="about">
+    <h1>Graph Starcraft!</h1>
+    <p>Instructions:</p>
+    <ol>
+      <li>Add Buildings with the "+ Building &darr;" button (in the top left)</li>
+      <li>Add Tasks with the "+ Task &rarr;" button (next to each building)</li>
+      <li>Click &amp; drag to move tasks around horizontally</li>
+      <li>Watch below as your resources graph adjusts accordingly (colors:
+        <span style="font-weight: bold; color: #4bb2c5">Minerals</span>,
+        <span style="font-weight: bold; color: #00ff00">Gas</span>, and supply:
+        <span style="font-weight: bold; color: #ff5800">Current</span> /
+        <span style="font-weight: bold; color: #EAA228">Cap</span>)
+      </li>
+      <li>To save, click on the "Chart &rarr; Text" button and copy the text somewhere safe</li>
+      <li>To load your text, paste it in the textfield and click the "Text &rarr; Chart" button</li>
+    </ol>
+    <p>Confused?  Try the <a href="#" onclick="buildOrder = exampleBuildOrder; ganttTheData(); return false;">Example Build Order</a></p>
+    <br />
+    <p><a href="http://albert-hwang.com/graphstarcraft/">More Projects Notes...</a></p>
+    <p>by <a href="http://albert-hwang.com">Albert Hwang</a>.</p>
+  </div>
 
   <div id="ganttChartDiv"></div>
   <div id="graphDiv"></div>
-  <div id="about">&nbsp;&nbsp;<a href="http://albert-hwang.com">me</a>, <a href="http://albert-hwang.com/graphstarcraft/">project</a>, <a href="http://www.youtube.com/watch?v=oHg5SJYRHA0">answer</a></div>
 
   <script type="text/javascript" src="js/lib/jquery.js"></script>
   <script type="text/javascript" src="js/lib/jquery-ui.js"></script>

@@ -99,7 +99,8 @@ behavior: {
                   dom_option = $("<option>", { "value": taskName, "selected": isSelected }).html(taskName);
                   selector.append(dom_option);
                 }
-                var input =$("<input>", {"type": "submit", "value": "Add >", "id": "for_row_" + i});
+                var myString = $('<div/>').html("+ Task &rarr;").text();
+                var input =$("<input>", {"type": "submit", "value": myString, "id": "for_row_" + i});
                 input.click(function() {
                   var newTask = $(this).siblings('select').attr('value');
                   var rowIndex = parseInt($(this).attr('id').replace("for_row_", ""));
@@ -152,7 +153,8 @@ behavior: {
             var buildingOption = $("<option>", {"value": building }).html(building);
             buildingAdderOption.append(buildingOption);
           }
-          var buildingAdderInput =$("<input>", {"type": "submit", "value": "Add ^"});
+          var myString = $('<div/>').html("+ Building &darr;").text();
+          var buildingAdderInput =$("<input>", {"type": "submit", "value": myString});
           buildingAdderInput.click(function() {
             var newBuildingName = $(this).siblings('select').attr("value");
             var newBuildingObj = { name: newBuildingName, tasks: [] }
@@ -165,26 +167,22 @@ behavior: {
 
         addSaverLoader: function(div) {
           var saverLoaderContainer = $('<div id="buildOrderSaverLoaderContainer">');
-          var saver = "<textarea type='text' id='buildOrderSaverLoader' />";
+          var saver = "<label for='buildOrderSaverLoader'>Export / Import Text:</label><br /><textarea type='text' id='buildOrderSaverLoader' />";
 
-          var getterInput = $("<input>", {"type": "submit", "value": "Get Build Order", "id": "get_build_order"});
+          var myString = $('<div/>').html("Chart &rarr; Text").text();
+          var getterInput = $("<input>", {"type": "submit", "value": myString, "id": "get_build_order"});
           getterInput.click(function() {
             $("#buildOrderSaverLoader").html(JSON.stringify(buildOrder));
           });
 
-          var setterInput = $("<input>", {"type": "submit", "value": "Load Build Order", "id": "load_build_order"});
+          var myString = $('<div/>').html("Text &rarr; Chart").text();
+          var setterInput = $("<input>", {"type": "submit", "value": myString, "id": "load_build_order"});
           setterInput.click(function() {
             buildOrder = JSON.parse($("#buildOrderSaverLoader").val());
             ganttTheData();
           });
 
-          var exampleInput = $("<input>", {"type": "submit", "value": "Example Build Order", "id": "load_build_order"});
-          exampleInput.click(function() {
-            buildOrder = exampleBuildOrder;
-            ganttTheData();
-          });
-          
-          saverLoaderContainer.append(saver).append(getterInput).append(setterInput).append(exampleInput);
+          saverLoaderContainer.append(saver).append(getterInput).append("<br />").append(setterInput);
           div.append(saverLoaderContainer);
 
         },
