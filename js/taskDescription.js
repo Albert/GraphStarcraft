@@ -117,5 +117,13 @@ taskDescription = {       // BuildingTypes, tasks (type, time, minerals, gas, su
   },
   sensor_tower: {
     construction:         ["building", 25, 125, 100, 0, 0]
-  }
+  },
+  worker_count: {
+    "xfer (-5)": ["transferWorker_-10", 15, 0, 0, 0, 0],
+    "xfer (-5)":  ["transferWorker_-5",  15, 0, 0, 0, 0],
+    "scout (-1)":  ["transferWorker_-1",  15, 0, 0, 0, 0],
+    "scout returns (+1)":  ["transferWorker_1",   15, 0, 0, 0, 0],
+    "finish xfer (+5)":    ["transferWorker_5",   15, 0, 0, 0, 0],
+    "finish xfer (+10)":   ["transferWorker_10",  15, 0, 0, 0, 0]
+  } 
 };

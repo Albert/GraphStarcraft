@@ -126,6 +126,10 @@ function buildGraph() {
           workerCount = (currentEvent.eventSide == "beginning") ? workerCount - 1 : workerCount + 1;
           notableMin = true;
         }
+        if (currentEvent.eventType.substring(0, 14) == "transferWorker" && currentEvent.eventSide == "beginning") {
+          workerCount = workerCount + parseInt(currentEvent.eventType.split("_")[1]);
+          notableMin = true;
+        }
       }
     }
 
