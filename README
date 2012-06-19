@@ -1,18 +1,15 @@
 Graph Starcraft!
 
---Phedhex
+See a live version here:
+http://graphstarcraft.albert-hwang.com
 
-Okay, many thanks to:
+Lots of things left to do!
 
-the grubbsian
-http://www.thegrubbsian.com/
-for jquery ganttview
-
-jqplot
-
-& of course all you lovely developers who've voluntered!  Feel free to add your names to the list:
-
-Fission
-Matschie
-
-Cheers!
+* Integrate some design
+* Integrate different races
+* Make the code actually pleasant to look at
+* Optimize the code
+* Fix known issues:
+  * Bunker "salvage" return on money
+  * Orbital "extra supplies" return
+  * Mineral harvest rate of two bases
